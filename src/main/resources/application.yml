@@ -1,0 +1,29 @@
+spring:
+    main:
+        show_banner: off
+    application:
+        name: mvc-app
+    profiles:
+        active: local-dev
+
+---
+
+spring.profiles: local-dev
+
+spring:
+    jpa.show-sql: true
+    h2.console.settings.web-allow-others: true
+    datasource.url: jdbc:h2:./db/dev/dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+server:
+    port: 88
+
+---
+
+spring.profiles: prod
+
+spring:
+    jpa.show-sql: true
+    h2.console.settings.web-allow-others: true
+    datasource.url: jdbc:h2:./db/prod/dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+server:
+    port: 8888
