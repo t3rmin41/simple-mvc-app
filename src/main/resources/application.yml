@@ -13,7 +13,11 @@ spring.profiles: local-dev
 spring:
     jpa.show-sql: true
     h2.console.settings.web-allow-others: true
-    datasource.url: jdbc:h2:./db/dev/dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+    datasource.url: jdbc:h2:./db/dev/bin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS WEBAPP\;SET SCHEMA WEBAPP
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+        ddl-auto: update
 server:
     port: 88
 
@@ -22,8 +26,12 @@ server:
 spring.profiles: prod
 
 spring:
-    jpa.show-sql: true
+    jpa.show-sql: false
     h2.console.settings.web-allow-others: true
-    datasource.url: jdbc:h2:./db/prod/dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+    datasource.url: jdbc:h2:./db/prod/bin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS WEBAPP\;SET SCHEMA WEBAPP
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+        ddl-auto: update
 server:
     port: 8888

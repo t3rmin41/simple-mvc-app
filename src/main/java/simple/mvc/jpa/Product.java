@@ -1,17 +1,23 @@
 package simple.mvc.jpa;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "PRODUCTS")
 public class Product {
 
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
+  @Column(name = "ID")
   private Long id;
+  @Column(name = "TITLE")
   private String title;
+  @Column(name = "PRICE")
   private Double price;
 
   public Long getId() {
