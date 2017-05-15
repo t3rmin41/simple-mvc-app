@@ -5,9 +5,11 @@ import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@ComponentScan(basePackages = {"simple.mvc.service.impl", "simple.mvc.repository.impl"})
+@EnableWebMvc
+@ComponentScan(basePackages = {"simple.mvc.controller", "simple.mvc.service.impl", "simple.mvc.repository.impl"})
 public class AppConfig {
 
   @Bean

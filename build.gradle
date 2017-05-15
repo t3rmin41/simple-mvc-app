@@ -52,6 +52,8 @@ dependencies {
     compile('org.springframework:spring-orm:4.1.4.RELEASE')
     compile("org.hibernate:hibernate-core:${hibernateVersion}")
     compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
+    
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 
     testCompile("junit:junit")
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
