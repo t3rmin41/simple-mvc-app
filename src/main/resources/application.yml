@@ -14,16 +14,14 @@ spring:
     jpa.show-sql: true
     h2.console.settings.web-allow-others: true
     datasource:
-        url: jdbc:h2:./db/dev/bin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS WEBAPP\;SET SCHEMA WEBAPP
+        url: jdbc:h2:./db/dev/bin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;SCHEMA=WEBAPP
         driver-class-name: org.h2.Driver
         username: sa
         password: d3vs3cr3t
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-        generate-ddl: true
-        ddl-auto: none
-        hbm2ddl-auto: update
+        hibernate:
+            ddl-auto: update
 server:
     port: 88
 
@@ -35,15 +33,13 @@ spring:
     jpa.show-sql: false
     h2.console.settings.web-allow-others: true
     datasource:
-        url: jdbc:h2:./db/prod/bin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;SET SCHEMA WEBAPP
+        url: jdbc:h2:./db/prod/bin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;SCHEMA=WEBAPP
         driver-class-name: org.h2.Driver
         username: sa
         password: pr0ds3cr3t
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-        generate-ddl: true
-        ddl-auto: none
-        hbm2ddl-auto: update
+        hibernate:
+            ddl-auto: update
 server:
     port: 8888
