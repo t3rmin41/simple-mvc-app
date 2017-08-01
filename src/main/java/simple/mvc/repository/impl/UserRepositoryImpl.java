@@ -27,7 +27,11 @@ public class UserRepositoryImpl implements UserRepository {
         //query.setParameter("pusername", username);
         //query.setParameter("ppassword", username);
         List<User> users = query.getResultList();
-        return users.get(0);
+        if (1 == users.size()) {
+            return users.get(0);
+        } else {
+            return null;
+        }
     }
 
 }

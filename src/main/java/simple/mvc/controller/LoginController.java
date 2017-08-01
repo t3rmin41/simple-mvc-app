@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import simple.mvc.bean.UserBean;
 import simple.mvc.service.UserService;
@@ -20,9 +21,14 @@ public class LoginController {
     }
     
     @RequestMapping(value = "/loginuser", method = RequestMethod.POST, produces = "application/json")
-    public UserBean loginUser(String username, String password) {
-        return userService.getUserByUsernamAndPassword(username, password);
+    public @ResponseBody UserBean loginUser(String username, String password) {
+        UserBean userBean = userService.getUserByUsernamAndPassword(username, password);
+        return userBean;
     }
     
+    @RequestMapping(value = "/logged", method = RequestMethod.GET)
+    public String successfullLoginPage() {
+        return "logged";
+    }
     
 }

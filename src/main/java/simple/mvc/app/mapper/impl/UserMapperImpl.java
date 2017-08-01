@@ -17,7 +17,11 @@ public class UserMapperImpl implements UserMapper {
     @Override
     public UserBean getUserBeanByNameAndPassword(String username, String password) {
         User jpa = userRepo.getUserByUsernameAndPassword(username, password);
-        return new UserBean().setPassword(jpa.getPassword()).setUsername(jpa.getUsername());
+        if (null != jpa) {
+            return new UserBean().setPassword(jpa.getPassword()).setUsername(jpa.getUsername());
+        } else {
+            return null;
+        }
     }
 
 }
