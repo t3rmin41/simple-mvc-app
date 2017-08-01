@@ -8,9 +8,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 
 import simple.mvc.config.AppConfig;
+import simple.mvc.config.MvcConfig;
 
 @SpringBootApplication
-@Import({AppConfig.class})
+@Import({AppConfig.class, MvcConfig.class})
 public class SimpleApp {
 
   private static Logger log = LoggerFactory.getLogger(SimpleApp.class);

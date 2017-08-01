@@ -52,8 +52,13 @@ dependencies {
     compile('org.springframework:spring-orm:4.1.4.RELEASE')
     compile("org.hibernate:hibernate-core:${hibernateVersion}")
     compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
+
+    compile("com.fasterxml.jackson.core:jackson-core:2.8.8")
     
-    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    //compile("javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1")
+    compile("javax.servlet:jstl")
+    compile("org.apache.tomcat.embed:tomcat-embed-jasper")
+    compile("org.apache.commons:commons-lang3:3.6")
 
     testCompile("junit:junit")
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")

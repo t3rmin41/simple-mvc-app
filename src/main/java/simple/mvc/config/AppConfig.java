@@ -6,11 +6,9 @@ import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@EnableWebMvc
-@ComponentScan(basePackages = {"simple.mvc.controller", "simple.mvc.service.impl", "simple.mvc.repository.impl", "simple.mvc.app.mapper.impl"})
+@ComponentScan(basePackages = {"simple.mvc.controller", "simple.mvc.service.impl", "simple.mvc.repository.impl", "simple.mvc.app.mapper.impl", "simple.mvc.util"})
 @EntityScan(basePackages = {"simple.mvc.jpa"})
 public class AppConfig {
 
@@ -20,4 +18,5 @@ public class AppConfig {
       registrationBean.addUrlMappings("/h2-console/*");
       return registrationBean;
   }
+
 }
