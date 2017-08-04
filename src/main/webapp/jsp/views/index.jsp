@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<html lang="en">
+<%@ include file="/jsp/includes.jsp"%>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Index page</title>
     <script type="text/javascript" src="ui-resources/js/jquery-3.2.1.min.js"></script>
 </head>
 <body>
@@ -11,7 +11,7 @@
             <h1>Spring Boot JSP Example</h1>
             <h2>Hello <spring:message code="hello.text" /></h2>
              
-            Click on this <strong><a href="next">link</a></strong> to visit another page.
+            Click <strong><a href="login">here</a></strong> to login
         </div>
     </div>
 </body>

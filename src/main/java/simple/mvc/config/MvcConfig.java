@@ -31,8 +31,7 @@ import simple.mvc.util.MessageSourceMapAdapter;
 @EnableWebMvc
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter   {
-
-
+ 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/ui-resources/**").addResourceLocations("/ui-resources/");
@@ -50,7 +49,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter   {
         bean.setSuffix(".jsp");
         return bean;
     }
- 
+
     /*
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver getMultipartResolver() {

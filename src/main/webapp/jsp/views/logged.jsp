@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<html lang="en">
+<%@ include file="/jsp/includes.jsp"%>
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Example</title>
+        <title>Logged in</title>
         <script type="text/javascript" src="ui-resources/js/jquery-3.2.1.min.js"></script>
     </head>
     <body>
-    <h3>Successfully logged in</h3>
+    <div style="float:right">
+        <a href="logout">Logout</a>
+    </div>
+    <div>
+      <h3>Successfully logged in</h3>
+    </div>
+    <div>
+        <a href="/productsPage">Go to products page</a>
+    </div>
     </body>
 </html>
 <script>

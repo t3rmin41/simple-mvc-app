@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<html lang="en">
+<%@ include file="/jsp/includes.jsp"%>
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login page</title>
         <script type="text/javascript" src="ui-resources/js/jquery-3.2.1.min.js"></script>
     </head>
     <body>
+      <div style="width:10%; margin:0 auto;">
+        <a href="/">Go to index page</a>
+      </div>
+      <div>
         <form id="loginform">
-            <center>
+          <center>
             <table border="1" width="30%" cellpadding="3">
                 <thead>
                     <tr>
@@ -26,15 +29,13 @@
                         <td><input type="password" name="password" value="" /></td>
                     </tr>
                     <tr>
-                        <td><input type="submit" value="Login" /></td>
+                        <td colspan=2 align="center"><input type="submit" value="Login" /></td>
                     <tr/>
-                    <tr>
-                        <td><input type="reset" value="Reset" /></td>
-                    </tr>
                 </tbody>
-            </table>
+              </table>
             </center>
-        </form>
+          </form>
+        </div>
     </body>
 </html>
 <script>
@@ -47,7 +48,7 @@ $(document).ready(function(){
         //do your own request an handle the results
         $.ajax({
                 url: "/loginuser",
-                type: 'post',
+                type: "POST",
                 data: $("#loginform").serialize(),
                 success: function(data, textStatus, jQxhr){
                     console.log(data);

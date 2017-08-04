@@ -8,13 +8,15 @@ public class ProductBean {
     public String getTitle() {
         return title;
     }
-    public void setTitle(String title) {
+    public ProductBean setTitle(String title) {
         this.title = title;
+        return this;
     }
     public Double getPrice() {
         return price;
     }
-    public void setPrice(Double price) {
+    public ProductBean setPrice(Double price) {
         this.price = price;
+        return this;
     }
 }

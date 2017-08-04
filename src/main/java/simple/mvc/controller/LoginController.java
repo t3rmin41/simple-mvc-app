@@ -26,6 +26,11 @@ public class LoginController {
         return userBean;
     }
     
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout() {
+        return "login";
+    }
+    
     @RequestMapping(value = "/logged", method = RequestMethod.GET)
     public String successfullLoginPage() {
         return "logged";
