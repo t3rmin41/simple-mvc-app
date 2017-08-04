@@ -20,12 +20,13 @@ public class LoginController {
         return "login";
     }
     
+    
     @RequestMapping(value = "/loginuser", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody UserBean loginUser(String username, String password) {
         UserBean userBean = userService.getUserByUsernamAndPassword(username, password);
         return userBean;
     }
-    
+
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
         return "login";

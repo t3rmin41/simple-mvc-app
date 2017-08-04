@@ -53,13 +53,13 @@ dependencies {
     compile("org.hibernate:hibernate-core:${hibernateVersion}")
     compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
     //Spring security
-    //compile("org.springframework.security:spring-security-core:4.2.3.RELEASE")
-    //compile("org.springframework.security:spring-security-config:4.2.3.RELEASE")
-    //compile("org.springframework.security:spring-security-taglibs:4.2.3.RELEASE")
-    //compile("org.springframework.security:spring-security-web:4.2.3.RELEASE")
+    compile("org.springframework.security:spring-security-core:4.2.3.RELEASE")
+    compile("org.springframework.security:spring-security-config:4.2.3.RELEASE")
+    compile("org.springframework.security:spring-security-taglibs:4.2.3.RELEASE")
+    compile("org.springframework.security:spring-security-web:4.2.3.RELEASE")
 
-    compile("com.fasterxml.jackson.core:jackson-core:2.6.4")
-    compile("com.fasterxml.jackson.core:jackson-databind:2.6.4")
+    //compile("com.fasterxml.jackson.core:jackson-core:2.6.4")
+    //compile("com.fasterxml.jackson.core:jackson-databind:2.6.4")
     
     //compile("javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1")
     compile("javax.servlet:jstl")

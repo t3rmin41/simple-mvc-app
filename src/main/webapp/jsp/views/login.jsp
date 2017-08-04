@@ -40,7 +40,8 @@
 </html>
 <script>
 $(document).ready(function(){
-    console.log("Ready!");
+    console.log("Login page is ready!");
+    
     $("#loginform").submit(function(e) {
         //prevent Default functionality
         e.preventDefault();
@@ -52,14 +53,16 @@ $(document).ready(function(){
                 data: $("#loginform").serialize(),
                 success: function(data, textStatus, jQxhr){
                     console.log(data);
-                    if (data.username == $("#loginform input[name=username]").val() && data.password == $("#loginform input[name=password]").val()) {
-                       window.location.href = "/logged";
-                    }
+                    window.location.href = "/logged";
+                    //if (data.enabled) {
+                    //   window.location.href = "/logged";
+                    //}
                 },
                 error: function(jqXhr, textStatus, errorThrown){
                     console.log(errorThrown);
                 }
         });
     });
+    /**/
 });
 </script>

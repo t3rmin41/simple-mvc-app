@@ -1,10 +1,21 @@
 package simple.mvc.jpa;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +32,12 @@ public class User {
     
     @Column(name = "PASSWORD")
     private String password;
+    
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+    private List<Role> roles = new ArrayList<Role>();
+    
+    @Column(name = "ENABLED")
+    private boolean enabled;
 
     public Long getId() {
         return id;
@@ -44,5 +61,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+    
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
