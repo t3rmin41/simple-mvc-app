@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import simple.mvc.jpa.Role;
 import simple.mvc.jpa.User;
 import simple.mvc.repository.UserRepository;
 
@@ -31,6 +32,40 @@ public class UserRepositoryImpl implements UserRepository {
             return users.get(0);
         } else {
             return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public User createUser(User jpa) {
+        return em.merge(jpa);
+    }
+
+    @Override
+    @Transactional
+    public List<User> getAllUsers() {
+        String q = "SELECT u FROM User u WHERE u.enabled = true";
+        TypedQuery<User> query = em.createQuery(q, User.class);
+        return query.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(User jpa) {
+        em.remove(jpa);
+    }
+
+    @Override
+    @Transactional
+    public User updateUser(User jpa) {
+        return em.merge(jpa);
+    }
+
+    @Override
+    @Transactional
+    public void createRoles(List<Role> roles) {
+        for (Role role : roles) {
+            em.merge(role);
         }
     }
 

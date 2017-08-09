@@ -16,6 +16,9 @@
     <div>
         <a href="/productsPage">Go to products page</a>
     </div>
+    <div>
+        <a href="/usersPage">Go to users page</a>
+    </div>
     </body>
 </html>
 <script>

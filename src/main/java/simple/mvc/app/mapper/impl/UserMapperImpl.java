@@ -21,17 +21,61 @@ public class UserMapperImpl implements UserMapper {
     @Override
     public UserBean getUserBeanByNameAndPassword(String username, String password) {
         User jpa = userRepo.getUserByUsernameAndPassword(username, password);
-        List<String> roles = new ArrayList<String>();
-        for (Role role : jpa.getRoles()) {
-            roles.add(role.getRole());
-        }
         if (null != jpa) {
             return new UserBean().setPassword(jpa.getPassword())
                                  .setUsername(jpa.getUsername())
-                                 .setRoles(roles).setEnabled(jpa.getEnabled());
+                                 .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled());
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void createUser(UserBean bean) {
+        User jpa = new User();
+        jpa.setUsername(bean.getUsername());
+        jpa.setPassword(bean.getPassword());
+        jpa.setEnabled(true);
+        User created = userRepo.createUser(jpa);
+        /*
+        List<Role> roles = new ArrayList<Role>();
+        for (String rolename : bean.getRoles()) {
+            Role jpaRole = new Role();
+            jpaRole.setUser(created);
+            jpaRole.setRole(rolename);
+        }
+        /**/
+    }
+
+    @Override
+    public List<UserBean> getAllUsers() {
+        List<UserBean> beans = new ArrayList<UserBean>();
+        for (User jpa : userRepo.getAllUsers()) {
+            beans.add(new UserBean().setPassword(jpa.getPassword())
+                    .setUsername(jpa.getUsername())
+                    .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled()));
+        }
+        return beans;
+    }
+
+    @Override
+    public void deleteUser(UserBean bean) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public UserBean updateUser(UserBean bean) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<String> convertUserRolesToUserBeanRoles(List<Role> roles) {
+        List<String> roleNames = new ArrayList<String>();
+        for (Role role : roles) {
+            roleNames.add(role.getRole());
+        }
+        return roleNames;
     }
 
 }
