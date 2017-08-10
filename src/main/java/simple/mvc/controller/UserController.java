@@ -28,7 +28,7 @@ public class UserController {
         return userService.getAllUsers();
     }
     
-    @RequestMapping(value = "/users/create", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/users/create", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
     public void createUser(@RequestBody UserBean bean) {
         userService.createUser(bean);
     }

@@ -37,14 +37,14 @@ public class UserMapperImpl implements UserMapper {
         jpa.setPassword(bean.getPassword());
         jpa.setEnabled(true);
         User created = userRepo.createUser(jpa);
-        /*
         List<Role> roles = new ArrayList<Role>();
         for (String rolename : bean.getRoles()) {
             Role jpaRole = new Role();
             jpaRole.setUser(created);
             jpaRole.setRole(rolename);
+            roles.add(jpaRole);
         }
-        /**/
+        userRepo.createRoles(roles);
     }
 
     @Override

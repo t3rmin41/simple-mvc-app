@@ -19,4 +19,5 @@ public interface UserMapper {
     UserBean updateUser(UserBean bean);
 
     List<String> convertUserRolesToUserBeanRoles(List<Role> roles);
+    
 }
