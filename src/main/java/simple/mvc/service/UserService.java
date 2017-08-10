@@ -8,7 +8,7 @@ public interface UserService {
 
     UserBean getUserByUsernamAndPassword(String userName, String password);
     
-    void createUser(UserBean bean);
+    UserBean createUser(UserBean bean);
     
     List<UserBean> getAllUsers();
     

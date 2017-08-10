@@ -81,6 +81,7 @@ $("#adduser").submit(function(e) {
             data: JSON.stringify(userBean),
             success: function(data, textStatus, jQxhr){
                 console.log(data);
+                $("#adduser").get(0).reset();
                 loadAllUsers();
             },
             error: function(jqXhr, textStatus, errorThrown){

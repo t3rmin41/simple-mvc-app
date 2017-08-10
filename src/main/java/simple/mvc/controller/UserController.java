@@ -29,7 +29,7 @@ public class UserController {
     }
     
     @RequestMapping(value = "/users/create", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
-    public void createUser(@RequestBody UserBean bean) {
-        userService.createUser(bean);
+    public @ResponseBody UserBean createUser(@RequestBody UserBean bean) {
+        return userService.createUser(bean);
     }
 }

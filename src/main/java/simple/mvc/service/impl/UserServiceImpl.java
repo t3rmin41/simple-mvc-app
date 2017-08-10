@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserBean bean) {
-        userMapper.createUser(bean);
+    public UserBean createUser(UserBean bean) {
+        return userMapper.createUser(bean);
     }
 
     @Override

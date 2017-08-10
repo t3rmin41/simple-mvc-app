@@ -8,9 +8,11 @@ import simple.mvc.jpa.User;
 
 public interface UserMapper {
 
-    public UserBean getUserBeanByNameAndPassword(String username, String password);
+    UserBean getUserBeanByNameAndPassword(String username, String password);
 
-    void createUser(UserBean bean);
+    UserBean converUserToBeanByUserId(Long id);
+    
+    UserBean createUser(UserBean bean);
     
     List<UserBean> getAllUsers();
     

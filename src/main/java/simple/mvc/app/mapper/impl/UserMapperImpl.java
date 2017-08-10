@@ -31,7 +31,7 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public void createUser(UserBean bean) {
+    public UserBean createUser(UserBean bean) {
         User jpa = new User();
         jpa.setUsername(bean.getUsername());
         jpa.setPassword(bean.getPassword());
@@ -45,6 +45,7 @@ public class UserMapperImpl implements UserMapper {
             roles.add(jpaRole);
         }
         userRepo.createRoles(roles);
+        return converUserToBeanByUserId(created.getId());
     }
 
     @Override
@@ -76,6 +77,18 @@ public class UserMapperImpl implements UserMapper {
             roleNames.add(role.getRole());
         }
         return roleNames;
+    }
+
+    @Override
+    public UserBean converUserToBeanByUserId(Long id) {
+        User jpa = userRepo.getUserById(id);
+        if (null != jpa) {
+            return new UserBean().setPassword(jpa.getPassword())
+                                 .setUsername(jpa.getUsername())
+                                 .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled());
+        } else {
+            return null;
+        }
     }
 
 }

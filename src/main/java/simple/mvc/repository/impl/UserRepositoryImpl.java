@@ -69,4 +69,13 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Override
+    @Transactional
+    public User getUserById(Long id) {
+        String q = "SELECT u FROM User u JOIN FETCH u.roles WHERE u.id = :pid";
+        TypedQuery<User> query = em.createQuery(q, User.class);
+        query.setParameter("pid", id);
+        return query.getSingleResult();
+    }
+
 }

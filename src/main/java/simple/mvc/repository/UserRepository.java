@@ -9,6 +9,8 @@ public interface UserRepository {
 
     User getUserByUsernameAndPassword(String username, String password);
     
+    User getUserById(Long id);
+    
     User createUser(User jpa);
     
     void createRoles(List<Role> roles);
