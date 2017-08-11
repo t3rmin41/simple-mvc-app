@@ -42,4 +42,9 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserBean getUserById(Long id) {
+        return userMapper.converUserToBeanByUserId(id);
+    }
+
 }

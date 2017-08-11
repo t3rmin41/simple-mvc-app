@@ -3,28 +3,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Users page</title>
-        <script type="text/javascript" src="ui-resources/js/jquery-3.2.1.min.js"></script>
+        <title>User edit</title>
+        <script type="text/javascript" src="../ui-resources/js/jquery-3.2.1.min.js"></script>
     </head>
     <body>
      <div style="float:right">
         <a href="logout">Logout</a>
     </div>
     <div>
-        <table id="users" border="1">
-            <thead>
-                <tr><th>Username</th><th>Enabled</th><th>Roles</th></tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-        <br />
-    </div>
-    <div>
-        <form id="adduser">
+        <form id="edituser">
             <table border="1">
                 <thead>
-                    <tr><td colspan="2">Add new user</td></tr>
+                    <tr><td colspan="2">Edit user</td></tr>
                 </thead>
                 <tbody>
                     <tr><td>Username: </td><td><input type="text" name="username" value=""></td></tr>
@@ -35,39 +25,36 @@
                             <input type="checkbox" name="roles[]" value="USER">USER <br />
                             <input type="checkbox" name="roles[]" value="GUEST">GUEST <br />
                         </td>
-                    <tr><td colspan="2"><input type="submit" value="Create user" /></td></tr>
+                    <tr><td colspan="2"><input type="submit" value="Edit user" /></td></tr>
                 </tbody>
             </table>
         </form>
     </div>
     <div>
-        <a href="/logged">Go to previous page</a>
+        <a href="/usersPage">Go to previous page</a>
     </div>
     </body>
 </html>
 <script>
-function loadAllUsers() {
+function loadUser() {
     $.ajax({
-        url: "/users",
+        url: "/users/"+window.location.href.substring(window.location.href.lastIndexOf('/')+1),
         type: "GET",
         success: function(data, textStatus, jQxhr){
             console.log(data);
-            tbody = "";
-            $.each(data, function(index, value){
-                tbody += "<tr>"+
-                           "<td><a href=\"/userview/"+value.id+"\">"+value.username+"</a></td>"+
-                           "<td>"+value.enabled+"</td>"+
-                           "<td>"+value.roles.join()+"</td>"+
-                         "</tr>";
+            $("#edituser input[name=username]").val(data.username);
+            $.each(data.roles, function(index, rolename) {
+                $("#edituser input[name='roles[]']").filter(function(i, obj) {
+                    return obj.value && obj.value == rolename;
+                }).attr('checked', true);
             });
-            $("#users tbody").html(tbody);
         },
         error: function(jqXhr, textStatus, errorThrown){
             console.log(errorThrown);
         }
    });
 }
-$("#adduser").submit(function(e) {
+$("#edituser").submit(function(e) {
     //prevent Default functionality
     e.preventDefault();
     var userBean = {};
@@ -75,12 +62,12 @@ $("#adduser").submit(function(e) {
     userBean.password = $("#adduser input[name=password]").val();
     var roles = [];
     $("#adduser input[name='roles[]']:checked").each(function(){
-    	roles.push($(this).val());
+        roles.push($(this).val());
     });
     userBean.roles = roles;
     $.ajax({
-            url: "/users/create",
-            type: "POST",
+            url: "/users/edit/"+window.location.href.substring(window.location.href.lastIndexOf('/')+1),
+            type: "PUT",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(userBean),
             success: function(data, textStatus, jQxhr){
@@ -94,7 +81,7 @@ $("#adduser").submit(function(e) {
     });
 });
 $(document).ready(function(){
-	loadAllUsers();
-    console.log("Users ready!");
+    loadUser();
+    console.log("User ready!");
 });
 </script>

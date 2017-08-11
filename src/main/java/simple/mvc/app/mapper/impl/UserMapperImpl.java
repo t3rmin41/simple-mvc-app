@@ -22,8 +22,9 @@ public class UserMapperImpl implements UserMapper {
     public UserBean getUserBeanByNameAndPassword(String username, String password) {
         User jpa = userRepo.getUserByUsernameAndPassword(username, password);
         if (null != jpa) {
-            return new UserBean().setPassword(jpa.getPassword())
+            return new UserBean().setId(jpa.getId())
                                  .setUsername(jpa.getUsername())
+                                 .setPassword(jpa.getPassword())
                                  .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled());
         } else {
             return null;
@@ -54,6 +55,7 @@ public class UserMapperImpl implements UserMapper {
         for (User jpa : userRepo.getAllUsers()) {
             beans.add(new UserBean().setPassword(jpa.getPassword())
                     .setUsername(jpa.getUsername())
+                    .setId(jpa.getId())
                     .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled()));
         }
         return beans;
@@ -85,6 +87,7 @@ public class UserMapperImpl implements UserMapper {
         if (null != jpa) {
             return new UserBean().setPassword(jpa.getPassword())
                                  .setUsername(jpa.getUsername())
+                                 .setId(jpa.getId())
                                  .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled());
         } else {
             return null;
