@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "ROLES") //, uniqueConstraints = @UniqueConstraint(columnNames = {"USER_ID", "ROLE"}))

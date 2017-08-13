@@ -4,7 +4,6 @@ import java.util.List;
 
 import simple.mvc.bean.UserBean;
 import simple.mvc.jpa.Role;
-import simple.mvc.jpa.User;
 
 public interface UserMapper {
 
