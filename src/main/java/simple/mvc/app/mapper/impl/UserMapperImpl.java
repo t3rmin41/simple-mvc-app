@@ -22,10 +22,7 @@ public class UserMapperImpl implements UserMapper {
     public UserBean getUserBeanByNameAndPassword(String username, String password) {
         User jpa = userRepo.getUserByUsernameAndPassword(username, password);
         if (null != jpa) {
-            return new UserBean().setId(jpa.getId())
-                                 .setUsername(jpa.getUsername())
-                                 .setPassword(jpa.getPassword())
-                                 .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled());
+            return convertJpaToBean(jpa);
         } else {
             return null;
         }
@@ -38,13 +35,7 @@ public class UserMapperImpl implements UserMapper {
         jpa.setPassword(bean.getPassword());
         jpa.setEnabled(true);
         User created = userRepo.createUser(jpa);
-        List<Role> roles = new ArrayList<Role>();
-        for (String rolename : bean.getRoles()) {
-            Role jpaRole = new Role();
-            jpaRole.setUser(created);
-            jpaRole.setRole(rolename);
-            roles.add(jpaRole);
-        }
+        List<Role> roles = convertRoleStringToRoles(bean.getRoles(), created);
         userRepo.createRoles(roles);
         return converUserToBeanByUserId(created.getId());
     }
@@ -53,23 +44,28 @@ public class UserMapperImpl implements UserMapper {
     public List<UserBean> getAllUsers() {
         List<UserBean> beans = new ArrayList<UserBean>();
         for (User jpa : userRepo.getAllUsers()) {
-            beans.add(new UserBean().setPassword(jpa.getPassword())
-                    .setUsername(jpa.getUsername())
-                    .setId(jpa.getId())
-                    .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled()));
+            beans.add(convertJpaToBean(jpa));
         }
         return beans;
     }
 
     @Override
-    public void deleteUser(UserBean bean) {
-        // TODO Auto-generated method stub
+    public boolean deleteUserById(Long id) {
+        User jpa = userRepo.getUserById(id);
+        return userRepo.deleteUser(jpa);
     }
 
     @Override
     public UserBean updateUser(UserBean bean) {
-        // TODO Auto-generated method stub
-        return null;
+        User jpa = userRepo.getUserById(bean.getId());
+        if (!bean.getPassword().isEmpty()) {
+            jpa.setPassword(bean.getPassword());
+        }
+        jpa.setUsername(bean.getUsername());
+        List<Role> newRoles = convertRoleStringToRoles(bean.getRoles(), jpa);
+        userRepo.removeRoles(jpa.getRoles());
+        userRepo.createRoles(newRoles);
+        return convertJpaToBean(userRepo.updateUser(jpa));
     }
 
     @Override
@@ -85,13 +81,28 @@ public class UserMapperImpl implements UserMapper {
     public UserBean converUserToBeanByUserId(Long id) {
         User jpa = userRepo.getUserById(id);
         if (null != jpa) {
-            return new UserBean().setPassword(jpa.getPassword())
-                                 .setUsername(jpa.getUsername())
-                                 .setId(jpa.getId())
-                                 .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled());
+            return convertJpaToBean(jpa);
         } else {
             return null;
         }
+    }
+    
+    private List<Role> convertRoleStringToRoles(List<String> roleNames, User jpa) {
+        List<Role> roles = new ArrayList<Role>();
+        for (String rolename : roleNames) {
+            Role jpaRole = new Role();
+            jpaRole.setUser(jpa);
+            jpaRole.setRole(rolename);
+            roles.add(jpaRole);
+        }
+        return roles;
+    }
+    
+    private UserBean convertJpaToBean(User jpa) {
+        return new UserBean().setPassword(jpa.getPassword())
+                .setUsername(jpa.getUsername())
+                .setId(jpa.getId())
+                .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled());
     }
 
 }

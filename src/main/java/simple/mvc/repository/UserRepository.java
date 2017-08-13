@@ -15,9 +15,11 @@ public interface UserRepository {
     
     void createRoles(List<Role> roles);
     
+    void removeRoles(List<Role> roles);
+    
     List<User> getAllUsers();
     
-    void deleteUser(User jpa);
+    boolean deleteUser(User jpa);
     
     User updateUser(User jpa);
 }

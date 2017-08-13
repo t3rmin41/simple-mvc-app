@@ -46,6 +46,10 @@
     </body>
 </html>
 <script>
+function resetUserAddForm() {
+    $("#adduser").get(0).reset();
+    $("#adduser input[name='roles[]']").removeAttr('checked');
+}
 function loadAllUsers() {
     $.ajax({
         url: "/users",
@@ -53,11 +57,12 @@ function loadAllUsers() {
         success: function(data, textStatus, jQxhr){
             console.log(data);
             tbody = "";
-            $.each(data, function(index, value){
+            $.each(data, function(index, bean){
                 tbody += "<tr>"+
-                           "<td><a href=\"/userview/"+value.id+"\">"+value.username+"</a></td>"+
-                           "<td>"+value.enabled+"</td>"+
-                           "<td>"+value.roles.join()+"</td>"+
+                           "<td><a href=\"/userview/"+bean.id+"\">"+bean.username+"</a></td>"+
+                           "<td>"+bean.enabled+"</td>"+
+                           "<td>"+bean.roles.join()+"</td>"+
+                           "<td colspan=\"2\"><a href=\"\" onclick='deleteUserById("+bean.id+")'>Delete</a></td>"+
                          "</tr>";
             });
             $("#users tbody").html(tbody);
@@ -85,7 +90,7 @@ $("#adduser").submit(function(e) {
             data: JSON.stringify(userBean),
             success: function(data, textStatus, jQxhr){
                 console.log(data);
-                $("#adduser").get(0).reset();
+                resetUserAddForm();
                 loadAllUsers();
             },
             error: function(jqXhr, textStatus, errorThrown){
@@ -93,6 +98,23 @@ $("#adduser").submit(function(e) {
             }
     });
 });
+function deleteUserById(id) {
+    //e.preventDefault();
+    $.ajax({
+        url: "/users/delete/"+id,
+        type: "DELETE",
+        success: function(data, textStatus, jQxhr){
+            console.log(data);
+            resetUserAddForm();
+            loadAllUsers();
+        },
+        error: function(jqXhr, textStatus, errorThrown){
+            console.log(errorThrown);
+            resetUserAddForm();
+            loadAllUsers();
+        }
+    });
+}
 $(document).ready(function(){
 	loadAllUsers();
     console.log("Users ready!");

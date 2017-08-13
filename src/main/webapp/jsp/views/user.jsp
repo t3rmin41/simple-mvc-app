@@ -10,6 +10,7 @@
      <div style="float:right">
         <a href="logout">Logout</a>
     </div>
+    <div id="updateSuccess"></div>
     <div>
         <form id="edituser">
             <table border="1">
@@ -17,6 +18,7 @@
                     <tr><td colspan="2">Edit user</td></tr>
                 </thead>
                 <tbody>
+                    <input type="hidden" name="userId" value="" />
                     <tr><td>Username: </td><td><input type="text" name="username" value=""></td></tr>
                     <tr><td>Password: </td><td><input type="password" name="password" value=""></td></tr>
                     <tr><td>Roles: </td>
@@ -36,12 +38,17 @@
     </body>
 </html>
 <script>
+function resetUserEditForm() {
+    $("#edituser").get(0).reset();
+    $("#edituser input[name='roles[]']").removeAttr('checked');
+}
 function loadUser() {
     $.ajax({
         url: "/users/"+window.location.href.substring(window.location.href.lastIndexOf('/')+1),
         type: "GET",
         success: function(data, textStatus, jQxhr){
             console.log(data);
+            $("#edituser input[name=userId]").val(data.id);
             $("#edituser input[name=username]").val(data.username);
             $.each(data.roles, function(index, rolename) {
                 $("#edituser input[name='roles[]']").filter(function(i, obj) {
@@ -58,30 +65,40 @@ $("#edituser").submit(function(e) {
     //prevent Default functionality
     e.preventDefault();
     var userBean = {};
-    userBean.username = $("#adduser input[name=username]").val();
-    userBean.password = $("#adduser input[name=password]").val();
+    userBean.id = $("#edituser input[name=userId]").val();
+    userBean.username = $("#edituser input[name=username]").val();
+    userBean.password = $("#edituser input[name=password]").val();
     var roles = [];
-    $("#adduser input[name='roles[]']:checked").each(function(){
+    $("#edituser input[name='roles[]']:checked").each(function(){
         roles.push($(this).val());
     });
     userBean.roles = roles;
     $.ajax({
-            url: "/users/edit/"+window.location.href.substring(window.location.href.lastIndexOf('/')+1),
+            url: "/users/update",
             type: "PUT",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(userBean),
             success: function(data, textStatus, jQxhr){
                 console.log(data);
-                $("#adduser").get(0).reset();
-                loadAllUsers();
+                resetUserEditForm();
+                loadUser();
+                $("#updateSuccess").html("User updated successfully");
+                $("#updateSuccess").css("background-color", "#58FF33");
+                $("#updateSuccess").css("display", "block");
             },
             error: function(jqXhr, textStatus, errorThrown){
                 console.log(errorThrown);
+                $("#updateSuccess").html("Failed to update user");
+                $("#updateSuccess").css("background-color", "#F35A53");
+                $("#updateSuccess").css("display", "block");
+                resetUserEditForm();
+                loadUser();
             }
     });
 });
 $(document).ready(function(){
     loadUser();
+    $("#updateSuccess").css("display", "none");
     console.log("User ready!");
 });
 </script>

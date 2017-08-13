@@ -44,4 +44,14 @@ public class UserController {
     public @ResponseBody UserBean getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
+    
+    @RequestMapping(value = "/users/update", method = RequestMethod.PUT, consumes="application/json", produces = "application/json")
+    public @ResponseBody UserBean updateUser(@RequestBody UserBean bean) {
+        return userService.updateUser(bean);
+    }
+    
+    @RequestMapping(value = "/users/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    public @ResponseBody boolean deleteUser(@PathVariable("id") Long id) {
+        return userService.deleteUserById(id);
+    }
 }

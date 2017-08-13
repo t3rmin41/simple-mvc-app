@@ -16,10 +16,10 @@ public interface UserMapper {
     
     List<UserBean> getAllUsers();
     
-    void deleteUser(UserBean bean);
+    boolean deleteUserById(Long id);
     
     UserBean updateUser(UserBean bean);
 
     List<String> convertUserRolesToUserBeanRoles(List<Role> roles);
-    
+
 }

@@ -4,8 +4,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TransactionRequiredException;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +20,8 @@ import simple.mvc.repository.UserRepository;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
+    private static Logger log = LoggerFactory.getLogger(UserRepositoryImpl.class);
+    
     @PersistenceContext
     private EntityManager em;
     
@@ -51,14 +57,31 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void deleteUser(User jpa) {
-        em.remove(jpa);
+    public boolean deleteUser(User jpa) {
+        /*
+        String q = "UPDATE User u SET u.enabled = false WHERE u.id = :pid";
+        Query query = em.createQuery(q);
+        query.setParameter("pid", jpa.getId());
+        return query.executeUpdate() == 1 ? true : false;
+        /**/
+        boolean result = false;
+        try {
+            em.remove(jpa);
+            result = true;
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
+        } catch (TransactionRequiredException e) {
+            log.error(e.getMessage());
+        }
+        return result;
+        /**/
     }
 
     @Override
     @Transactional
     public User updateUser(User jpa) {
-        return em.merge(jpa);
+        User updated = em.merge(jpa);
+        return getUserById(updated.getId());
     }
 
     @Override
@@ -68,11 +91,23 @@ public class UserRepositoryImpl implements UserRepository {
             em.merge(role);
         }
     }
+    
+    @Override
+    @Transactional
+    public void removeRoles(List<Role> roles) {
+        for (Role role : roles) {
+            String q = "DELETE FROM Role r WHERE r.role = :role AND r.user = :user AND r.active = 1";
+            Query query = em.createQuery(q);
+            query.setParameter("role", role.getRole());
+            query.setParameter("user", role.getUser());
+            int result = query.executeUpdate();
+        }
+    }
 
     @Override
     @Transactional
     public User getUserById(Long id) {
-        String q = "SELECT u FROM User u JOIN FETCH u.roles WHERE u.id = :pid";
+        String q = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.id = :pid";
         TypedQuery<User> query = em.createQuery(q, User.class);
         query.setParameter("pid", id);
         return query.getSingleResult();

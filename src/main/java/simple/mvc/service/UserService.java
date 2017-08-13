@@ -14,7 +14,7 @@ public interface UserService {
     
     List<UserBean> getAllUsers();
     
-    void deleteUser(UserBean bean);
+    boolean deleteUserById(Long id);
     
     UserBean updateUser(UserBean bean);
 }

@@ -31,15 +31,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(UserBean bean) {
-        // TODO Auto-generated method stub
-        
+    public boolean deleteUserById(Long id) {
+        return userMapper.deleteUserById(id);
     }
-
+    
     @Override
     public UserBean updateUser(UserBean bean) {
-        // TODO Auto-generated method stub
-        return null;
+        return userMapper.updateUser(bean);
     }
 
     @Override
