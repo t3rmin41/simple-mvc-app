@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <property name="LocalDevLogLevel" value="INFO" />
+    <property name="ProdLogLevel" value="WARN" />
     <property name="log-dir" value="mvc-app-log" />
     
     <property name="ACCESS_LOG_PATTERN" value="| %a | %A:%localPort | %r | %s | %b | %i{User-Agent}"/>
@@ -12,12 +14,13 @@
         </encoder>
     </appender>
 
-    <appender name="SIFTACCESSLOG" class="ch.qos.logback.access.sift.SiftingAppender">
-        <discriminator>
+    <appender name="DEVSIFTACCESSLOG" class="ch.qos.logback.access.sift.SiftingAppender">
+        <Discriminator class="ch.qos.logback.access.sift.AccessEventDiscriminator">
             <key>mvcInstanceId</key>
             <defaultValue>default</defaultValue>
-            <fieldName>SESSION_ATTRIBUTE</fieldName>
-        </discriminator>
+            <FieldName>LOCAL_PORT</FieldName>
+            <AdditionalKey>88</AdditionalKey>
+        </Discriminator>
         <sift>
             <appender name="FILE-${mvcInstanceId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
                 <file>./${log-dir}/${mvcInstanceId}/access.log</file>
@@ -40,8 +43,49 @@
         </sift>
     </appender>
     
-    <appender-ref ref="simpleConsole" />
-    
-    <appender-ref ref="SIFTACCESSLOG" />
+    <appender name="PRODSIFTACCESSLOG" class="ch.qos.logback.access.sift.SiftingAppender">
+        <Discriminator class="ch.qos.logback.access.sift.AccessEventDiscriminator">
+            <key>mvcInstanceId</key>
+            <defaultValue>default</defaultValue>
+            <FieldName>LOCAL_PORT</FieldName>
+            <AdditionalKey>8888</AdditionalKey>
+        </Discriminator>
+        <sift>
+            <appender name="FILE-${mvcInstanceId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./${log-dir}/${mvcInstanceId}/access.log</file>
+                <append>false</append>
+                <encoder class="ch.qos.logback.access.PatternLayoutEncoder">
+                    <charset>utf-8</charset>
+                    <pattern>%t{"yyyy-MM-dd HH:mm:ss,SSS 'UTC'", UTC} ${ACCESS_LOG_PATTERN}</pattern>
+                </encoder>
+                
+                <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+                    <FileNamePattern>./${log-dir}/${mvcInstanceId}/access.%i.log.zip</FileNamePattern>
+                    <MinIndex>1</MinIndex>
+                    <MaxIndex>10</MaxIndex>
+                </rollingPolicy>
+ 
+                <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+                    <MaxFileSize>10MB</MaxFileSize>
+                </triggeringPolicy>
+            </appender>
+        </sift>
+    </appender>
+
+    <!--DEVELOPMENT logger-->
+    <springProfile name="local-dev">
+        <root level="${LocalDevLogLevel}" additivity="false">
+            <appender-ref ref="DEVSIFTACCESSLOG" />
+            <appender-ref ref="simpleConsole" />
+        </root>
+    </springProfile>
+
+    <!--PRODUCTION logger-->
+    <springProfile name="prod">
+        <root level="${ProdLogLevel}" additivity="false">
+            <appender-ref ref="PRODSIFTACCESSLOG" />
+            <appender-ref ref="simpleConsole" />
+        </root>
+    </springProfile>
     
 </configuration>
