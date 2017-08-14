@@ -5,6 +5,7 @@
     <property name="ACCESS_LOG_PATTERN" value="| %a | %A:%localPort | %r | %s | %b | %i{User-Agent}"/>
     
     <!--Console Appender-->
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
     <appender name="simpleConsole" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.access.PatternLayoutEncoder">
             <pattern>%t{"yyyy-MM-dd HH:mm:ss,SSS 'UTC'", UTC} ${ACCESS_LOG_PATTERN}</pattern>
@@ -15,6 +16,7 @@
         <discriminator>
             <key>mvcInstanceId</key>
             <defaultValue>default</defaultValue>
+            <fieldName>SESSION_ATTRIBUTE</fieldName>
         </discriminator>
         <sift>
             <appender name="FILE-${mvcInstanceId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -37,6 +39,8 @@
             </appender>
         </sift>
     </appender>
+    
+    <appender-ref ref="simpleConsole" />
     
     <appender-ref ref="SIFTACCESSLOG" />
     
