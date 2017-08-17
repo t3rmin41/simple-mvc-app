@@ -18,7 +18,7 @@ spring:
         hibernate:
             ddl-auto: update
 server:
-    port: 88
+    port: 8888
 
 ---
 
@@ -32,4 +32,4 @@ spring:
         hibernate:
             ddl-auto: update
 server:
-    port: 8888
+    port: 8080
