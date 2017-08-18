@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property name="LocalDevLogLevel" value="INFO" />
-    <property name="ProdLogLevel" value="WARN" />
+    <property name="ProdLogLevel" value="INFO" />
     <property name="log-dir" value="mvc-app-log" />
     
     <property name="ACCESS_LOG_PATTERN" value="| %a | %A:%localPort | %r | %s | %b | %i{User-Agent}"/>
