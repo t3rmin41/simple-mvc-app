@@ -7,6 +7,8 @@ import simple.mvc.jpa.Role;
 
 public interface UserMapper {
 
+    UserBean getUserBeanByUsername(String username);
+    
     UserBean getUserBeanByNameAndPassword(String username, String password);
 
     UserBean converUserToBeanByUserId(Long id);

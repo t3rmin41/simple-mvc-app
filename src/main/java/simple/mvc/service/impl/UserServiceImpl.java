@@ -45,4 +45,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.converUserToBeanByUserId(id);
     }
 
+    @Override
+    public UserBean getUserByUsername(String username) {
+        return userMapper.getUserBeanByUsername(username);
+    }
+
 }

@@ -113,4 +113,13 @@ public class UserRepositoryImpl implements UserRepository {
         return query.getSingleResult();
     }
 
+    @Override
+    @Transactional
+    public User getUserByUsername(String username) {
+        String q = "SELECT u FROM User u WHERE u.username = :pusername";
+        TypedQuery<User> query = em.createQuery(q, User.class);
+        query.setParameter("pusername", username);
+        return query.getSingleResult();
+    }
+
 }

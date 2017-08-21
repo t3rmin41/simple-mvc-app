@@ -7,6 +7,8 @@ import simple.mvc.jpa.User;
 
 public interface UserRepository {
 
+    User getUserByUsername(String username);
+    
     User getUserByUsernameAndPassword(String username, String password);
     
     User getUserById(Long id);

@@ -7,8 +7,10 @@
         <script type="text/javascript" src="ui-resources/js/jquery-3.2.1.min.js"></script>
     </head>
     <body>
-     <div style="float:right">
-        <a href="logout">Logout</a>
+    <div style="float:right">
+        <security:authorize access="isAuthenticated()">
+            <security:authentication property="principal.username" /> | <a href="logout">Logout</a>
+        </security:authorize>
     </div>
     <div>
         <table id="users" border="1">
