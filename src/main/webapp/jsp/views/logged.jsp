@@ -8,7 +8,9 @@
     </head>
     <body>
     <div style="float:right">
-        <a href="logout">Logout</a>
+        <security:authorize access="isAuthenticated()">
+            <security:authentication property="principal.username" /> | <a href="logout">Logout</a>
+        </security:authorize>
     </div>
     <div>
       <h3>Successfully logged in</h3>

@@ -1,5 +1,7 @@
 package simple.mvc.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +21,7 @@ public class LoginController {
     public String loginPage() {
         return "login";
     }
-    
-    
+
     @RequestMapping(value = "/loginuser", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody UserBean loginUser(String username, String password) {
         UserBean userBean = userService.getUserByUsernamAndPassword(username, password);
@@ -33,7 +34,7 @@ public class LoginController {
     }
     
     @RequestMapping(value = "/logged", method = RequestMethod.GET)
-    public String successfullLoginPage() {
+    public String successfullLoginPage(Principal principal) {
         return "logged";
     }
     

@@ -1,8 +1,10 @@
 package simple.mvc.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +22,17 @@ public class UserController {
     private UserService userService;
     
     @RequestMapping(value = "/usersPage", method = RequestMethod.GET)
-    public String viewUserspage() {
+    public String viewUserspage(Principal principal) {
         return "users";
     }
-    
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody List<UserBean> getUsers() {
+    public @ResponseBody List<UserBean> getUsers(Principal principal) {
         return userService.getAllUsers();
     }
-    
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users/create", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
     public @ResponseBody UserBean createUser(@RequestBody UserBean bean) {
         return userService.createUser(bean);
@@ -43,12 +47,14 @@ public class UserController {
     public @ResponseBody UserBean getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
-    
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users/update", method = RequestMethod.PUT, consumes="application/json", produces = "application/json")
     public @ResponseBody UserBean updateUser(@RequestBody UserBean bean) {
         return userService.updateUser(bean);
     }
-    
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
     public @ResponseBody boolean deleteUser(@PathVariable("id") Long id) {
         return userService.deleteUserById(id);

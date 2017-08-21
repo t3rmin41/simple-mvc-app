@@ -87,6 +87,11 @@ public class UserMapperImpl implements UserMapper {
         }
     }
     
+    @Override
+    public UserBean getUserBeanByUsername(String username) {
+        return convertJpaToBean(userRepo.getUserByUsername(username));
+    }
+    
     private List<Role> convertRoleStringToRoles(List<String> roleNames, User jpa) {
         List<Role> roles = new ArrayList<Role>();
         for (String rolename : roleNames) {
@@ -104,5 +109,7 @@ public class UserMapperImpl implements UserMapper {
                 .setId(jpa.getId())
                 .setRoles(convertUserRolesToUserBeanRoles(jpa.getRoles())).setEnabled(jpa.getEnabled());
     }
+
+
 
 }
