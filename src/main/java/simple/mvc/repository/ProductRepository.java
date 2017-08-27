@@ -7,4 +7,6 @@ import simple.mvc.jpa.Product;
 public interface ProductRepository {
 
     List<Product> getAllProducts();
+    
+    Product getProductById(Long id);
 }

@@ -21,6 +21,9 @@
     <div>
         <a href="/usersPage">Go to users page</a>
     </div>
+    <div>
+        <a href="/ordersPage">Go to orders page</a>
+    </div>
     </body>
 </html>
 <script>
