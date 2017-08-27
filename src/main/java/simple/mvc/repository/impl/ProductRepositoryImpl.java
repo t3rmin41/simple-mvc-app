@@ -26,4 +26,13 @@ public class ProductRepositoryImpl implements ProductRepository {
         return query.getResultList();
     }
 
+    @Override
+    @Transactional
+    public Product getProductById(Long id) {
+        String q = "SELECT p FROM Product p WHERE p.id = :pid";
+        TypedQuery<Product> query = em.createQuery(q, Product.class);
+        query.setParameter("pid", id);
+        return query.getSingleResult();
+    }
+
 }
