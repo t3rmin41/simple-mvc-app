@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import ch.qos.logback.access.tomcat.LogbackValve;
 
 @Configuration
-@ComponentScan(basePackages = {"simple.mvc.controller", "simple.mvc.service.impl", "simple.mvc.repository.impl", "simple.mvc.app.mapper.impl", "simple.mvc.util"})
+@ComponentScan(basePackages = {"simple.mvc.controller", "simple.mvc.service.impl", "simple.mvc.repository.impl", "simple.mvc.app.mapper.impl", "simple.mvc.util", "simple.mvc.bean"})
 @EntityScan(basePackages = {"simple.mvc.jpa"})
 public class AppConfig {
 

@@ -15,7 +15,7 @@
     <div>
         <table id="products" border="1">
             <thead>
-                <tr><th>Title</th><th>Price</th></tr>
+                <tr><th>Title</th><th>Price</th><th>Actions</th></tr>
             </thead>
             <tbody>
             </tbody>
@@ -36,7 +36,11 @@ $(document).ready(function(){
             console.log(data);
             tbody = "";
             $.each(data, function(index, value){
-                tbody += "<tr><td>"+value.title+"</td><td>"+value.price+"</td></tr>";
+                tbody += "<tr>"+
+                  "<td>"+value.title+"</td>"+
+                  "<td>"+value.price+"</td>"+
+                  "<td colspan=\"2\"><a href=\"\" onclick='addToCart("+value.id+")'>Add to cart</a></td>"+
+                "</tr>";
             });
             $("#products tbody").html(tbody);
         },
