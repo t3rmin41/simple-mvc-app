@@ -37,11 +37,13 @@ $(document).ready(function(){
             tbody = "";
             $.each(data, function(index, value){
                 var created = new Date(value.created);
-                var updated = undefined;
-                if (undefined != value.updated) {
+                var createdUTC = created.toUTCString();
+                var updatedUTC = undefined;
+                if (undefined != value.updated && null != value.updated) {
                     var updated = new Date(value.updated);
+                    updatedUTC = updated.toUTCString();
                 }
-                tbody += "<tr><td>"+value.productName+"</td><td>"+value.price+"</td><td>"+value.status+"</td><td>"+value.orderedBy+"</td><td>"+created.toUTCString()+"</td><td>"+updated.toUTCString()+"</td></tr>";
+                tbody += "<tr><td>"+value.productName+"</td><td>"+value.price+"</td><td>"+value.status+"</td><td>"+value.orderedBy+"</td><td>"+created.toUTCString()+"</td><td>"+updatedUTC+"</td></tr>";
             });
             $("#orders tbody").html(tbody);
         },

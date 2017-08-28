@@ -24,13 +24,18 @@ public class CartController {
     @Inject
     private CartBean cartBean;
     
+    @RequestMapping(value = "/cart", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody CartBean getCart() {
+        return cartBean;
+    }
+    
     @RequestMapping(value = "/cart/addOrder", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
     public @ResponseBody CartBean addOrderToCart(@RequestBody OrderBean bean) {
         cartBean.getItems().add(bean);
         return cartBean;
     }
     
-    @RequestMapping(value = "/cart/submit", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
+    @RequestMapping(value = "/cart/submit", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody CartBean submitCart() {
         cartService.submitCart(cartBean);
         cartBean.clear();
