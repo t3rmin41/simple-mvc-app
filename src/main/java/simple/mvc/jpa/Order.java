@@ -32,6 +32,9 @@ public class Order {
     @Column(name = "PRICE")
     private Double price;
     
+    @Column(name = "ORDERED_BY")
+    private String orderedBy;
+    
     @Column(name = "STATUS")
     private String status;
     
@@ -71,6 +74,14 @@ public class Order {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getOrderedBy() {
+      return orderedBy;
+    }
+
+    public void setOrderedBy(String orderedBy) {
+      this.orderedBy = orderedBy;
     }
 
     public String getStatus() {

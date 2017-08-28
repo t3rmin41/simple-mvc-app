@@ -55,6 +55,7 @@ function addToCart(productId, title, price, status) {
     orderBean.productName = title;
     orderBean.price = price;
     orderBean.status = status;
+    orderBean.orderedBy = '<security:authorize access="isAuthenticated()"><security:authentication property="principal.username" /></security:authorize>';
     $.ajax({
             url: "/cart/addOrder",
             type: "POST",
@@ -71,6 +72,7 @@ function addToCart(productId, title, price, status) {
 }
 $(document).ready(function(){
     console.log("Products ready!");
+    
     loadAllProducts();
 });
 </script>

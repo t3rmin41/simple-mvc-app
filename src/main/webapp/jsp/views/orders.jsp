@@ -15,7 +15,7 @@
     <div>
         <table id="orders" border="1">
             <thead>
-                <tr><th>Title</th><th>Price</th><th>Status</th><th>Created</th><th>Updated</th></tr>
+                <tr><th>Title</th><th>Price</th><th>Status</th><th>Ordered by</th><th>Created</th><th>Updated</th></tr>
             </thead>
             <tbody>
             </tbody>
@@ -41,7 +41,7 @@ $(document).ready(function(){
                 if (undefined != value.updated) {
                     var updated = new Date(value.updated);
                 }
-                tbody += "<tr><td>"+value.productName+"</td><td>"+value.price+"</td><td>"+value.status+"</td><td>"+created.toUTCString()+"</td><td>"+updated.toUTCString()+"</td></tr>";
+                tbody += "<tr><td>"+value.productName+"</td><td>"+value.price+"</td><td>"+value.status+"</td><td>"+value.orderedBy+"</td><td>"+created.toUTCString()+"</td><td>"+updated.toUTCString()+"</td></tr>";
             });
             $("#orders tbody").html(tbody);
         },

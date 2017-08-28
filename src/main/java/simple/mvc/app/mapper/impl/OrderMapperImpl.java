@@ -1,6 +1,5 @@
 package simple.mvc.app.mapper.impl;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +47,6 @@ public class OrderMapperImpl implements OrderMapper {
         if (null != bean.getPrice()) {
             jpa.setPrice(bean.getPrice());
         }
-        if (null != bean.getProductName()) {
-            jpa.setTitle(bean.getProductName());
-        }
         if (null != bean.getStatus()) {
             jpa.setStatus(bean.getStatus());
         }
@@ -74,7 +70,7 @@ public class OrderMapperImpl implements OrderMapper {
 
     private OrderBean convertJpaToBean(Order jpa) {
         return new OrderBean().setId(jpa.getId()).setProductId(jpa.getProduct().getId())
-                  .setProductName(jpa.getTitle()).setPrice(jpa.getPrice())
+                  .setProductName(jpa.getTitle()).setPrice(jpa.getPrice()).setOrderedBy(jpa.getOrderedBy())
                   .setStatus(jpa.getStatus()).setCreated(jpa.getCreated()).setUpdated(jpa.getUpdated());
     }
     
@@ -86,6 +82,7 @@ public class OrderMapperImpl implements OrderMapper {
         jpa.setPrice(product.getPrice());
         jpa.setTitle(product.getTitle());
         jpa.setStatus(bean.getStatus());
+        jpa.setOrderedBy(bean.getOrderedBy());
         jpa.setCreated(bean.getCreated());
         jpa.setUpdated(bean.getUpdated());
         return jpa;
