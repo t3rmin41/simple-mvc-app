@@ -34,6 +34,7 @@
                     <tr><td>Roles: </td>
                         <td>
                             <input type="checkbox" name="roles[]" value="ADMIN">ADMIN <br />
+                            <input type="checkbox" name="roles[]" value="SUPERVISOR">SUPERVISOR <br />
                             <input type="checkbox" name="roles[]" value="USER">USER <br />
                             <input type="checkbox" name="roles[]" value="GUEST">GUEST <br />
                         </td>
