@@ -24,6 +24,6 @@ public class CartBean {
     }
 
     public void clear() {
-        this.items = new ArrayList<OrderBean>();
+        this.items.clear();
     }
 }
