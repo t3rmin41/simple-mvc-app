@@ -3,6 +3,7 @@ package simple.mvc.controller;
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import simple.mvc.bean.OrderBean;
 import simple.mvc.service.CartService;
 
 @Controller
+@Scope(value = "session")
 public class CartController {
 
     @Autowired
@@ -31,6 +33,7 @@ public class CartController {
     @RequestMapping(value = "/cart/submit", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
     public @ResponseBody CartBean submitCart() {
         cartService.submitCart(cartBean);
+        cartBean.clear();
         return cartBean;
     }
 }

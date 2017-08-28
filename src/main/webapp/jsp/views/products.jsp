@@ -27,8 +27,7 @@
     </body>
 </html>
 <script>
-$(document).ready(function(){
-    console.log("Products ready!");
+function loadAllProducts() {
     $.ajax({
         url: "/products",
         type: "GET",
@@ -39,7 +38,7 @@ $(document).ready(function(){
                 tbody += "<tr>"+
                   "<td>"+value.title+"</td>"+
                   "<td>"+value.price+"</td>"+
-                  "<td colspan=\"2\"><a href=\"\" onclick='addToCart("+value.id+")'>Add to cart</a></td>"+
+                  "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+value.id+",'"+value.title+"','"+value.price+"','new')\">Add to cart</div></td>"+
                 "</tr>";
             });
             $("#products tbody").html(tbody);
@@ -47,6 +46,31 @@ $(document).ready(function(){
         error: function(jqXhr, textStatus, errorThrown){
             console.log(errorThrown);
         }
-   });
+    });
+}
+function addToCart(productId, title, price, status) {
+    //prevent Default functionality
+    var orderBean = {};
+    orderBean.productId = productId;
+    orderBean.productName = title;
+    orderBean.price = price;
+    orderBean.status = status;
+    $.ajax({
+            url: "/cart/addOrder",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(orderBean),
+            success: function(data, textStatus, jQxhr){
+                console.log(data);
+                loadAllProducts();
+            },
+            error: function(jqXhr, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+    });
+}
+$(document).ready(function(){
+    console.log("Products ready!");
+    loadAllProducts();
 });
 </script>

@@ -36,7 +36,12 @@ $(document).ready(function(){
             console.log(data);
             tbody = "";
             $.each(data, function(index, value){
-                tbody += "<tr><td>"+value.title+"</td><td>"+value.price+"</td><td>"+value.status+"</td><td>"+value.created+"</td><td>"+value.updated+"</td></tr>";
+                var created = new Date(value.created);
+                var updated = undefined;
+                if (undefined != value.updated) {
+                    var updated = new Date(value.updated);
+                }
+                tbody += "<tr><td>"+value.productName+"</td><td>"+value.price+"</td><td>"+value.status+"</td><td>"+created.toUTCString()+"</td><td>"+updated.toUTCString()+"</td></tr>";
             });
             $("#orders tbody").html(tbody);
         },

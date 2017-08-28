@@ -118,7 +118,7 @@ function deleteUserById(id) {
     });
 }
 $(document).ready(function(){
-	loadAllUsers();
+    loadAllUsers();
     console.log("Users ready!");
 });
 </script>
