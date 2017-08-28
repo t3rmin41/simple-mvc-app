@@ -20,7 +20,7 @@ public class ProductMapperImpl implements ProductMapper {
     @Override
     public ProductBean getProductBeanByProduct(Product jpa) {
         ProductBean bean = new ProductBean();
-        bean.setTitle(jpa.getTitle()).setPrice(jpa.getPrice());
+        bean.setId(jpa.getId()).setTitle(jpa.getTitle()).setPrice(jpa.getPrice());
         return bean;
     }
 
@@ -28,7 +28,7 @@ public class ProductMapperImpl implements ProductMapper {
     public List<ProductBean> getProductBeansByProducts(List<Product> jpas) {
         List<ProductBean> beans = new ArrayList<ProductBean>();
         for(Product jpa : jpas) {
-            beans.add(new ProductBean().setPrice(jpa.getPrice()).setTitle(jpa.getTitle()));
+            beans.add(new ProductBean().setId(jpa.getId()).setPrice(jpa.getPrice()).setTitle(jpa.getTitle()));
         }
         return beans;
     }

@@ -11,6 +11,7 @@ public class OrderBean {
     private String productName;
     private Double price;
     private String status;
+    private String orderedBy;
     private Date created;
     private Date updated;
 
@@ -49,6 +50,13 @@ public class OrderBean {
         this.status = status;
         return this;
     }
+    public String getOrderedBy() {
+      return orderedBy;
+    }
+    public OrderBean setOrderedBy(String orderedBy) {
+      this.orderedBy = orderedBy;
+      return this;
+    }
     public Date getCreated() {
         return created;
     }
@@ -63,5 +71,4 @@ public class OrderBean {
         this.updated = updated;
         return this;
     }
-    
 }

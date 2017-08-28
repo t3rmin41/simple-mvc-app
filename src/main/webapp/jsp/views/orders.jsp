@@ -15,7 +15,7 @@
     <div>
         <table id="orders" border="1">
             <thead>
-                <tr><th>Title</th><th>Price</th><th>Status</th><th>Created</th><th>Updated</th></tr>
+                <tr><th>Title</th><th>Price</th><th>Status</th><th>Ordered by</th><th>Created</th><th>Updated</th></tr>
             </thead>
             <tbody>
             </tbody>
@@ -36,7 +36,14 @@ $(document).ready(function(){
             console.log(data);
             tbody = "";
             $.each(data, function(index, value){
-                tbody += "<tr><td>"+value.title+"</td><td>"+value.price+"</td><td>"+value.status+"</td><td>"+value.created+"</td><td>"+value.updated+"</td></tr>";
+                var created = new Date(value.created);
+                var createdUTC = created.toUTCString();
+                var updatedUTC = undefined;
+                if (undefined != value.updated && null != value.updated) {
+                    var updated = new Date(value.updated);
+                    updatedUTC = updated.toUTCString();
+                }
+                tbody += "<tr><td>"+value.productName+"</td><td>"+value.price+"</td><td>"+value.status+"</td><td>"+value.orderedBy+"</td><td>"+created.toUTCString()+"</td><td>"+updatedUTC+"</td></tr>";
             });
             $("#orders tbody").html(tbody);
         },

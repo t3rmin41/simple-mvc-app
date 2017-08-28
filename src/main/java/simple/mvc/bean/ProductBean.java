@@ -2,9 +2,17 @@ package simple.mvc.bean;
 
 public class ProductBean {
 
+    private Long id;
     private String title;
     private Double price;
 
+    public Long getId() {
+      return id;
+    }
+    public ProductBean setId(Long id) {
+      this.id = id;
+      return this;
+    }
     public String getTitle() {
         return title;
     }
