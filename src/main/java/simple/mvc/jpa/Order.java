@@ -31,9 +31,10 @@ public class Order {
     
     @Column(name = "PRICE")
     private Double price;
-    
-    @Column(name = "ORDERED_BY")
-    private String orderedBy;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="ORDERED_BY", nullable=false)
+    private User orderedBy;
     
     @Column(name = "STATUS")
     private String status;
@@ -76,11 +77,11 @@ public class Order {
         this.price = price;
     }
 
-    public String getOrderedBy() {
+    public User getOrderedBy() {
       return orderedBy;
     }
 
-    public void setOrderedBy(String orderedBy) {
+    public void setOrderedBy(User orderedBy) {
       this.orderedBy = orderedBy;
     }
 

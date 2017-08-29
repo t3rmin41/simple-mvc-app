@@ -55,7 +55,7 @@ function loadAllProducts() {
                 tbody += "<tr>"+
                   "<td>"+value.title+"</td>"+
                   "<td>"+value.price+"</td>"+
-                  "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+value.id+",'"+value.title+"','"+value.price+"','new')\">Add to cart</div></td>"+
+                  "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+value.id+",'"+value.price+"','new')\">Add to cart</div></td>"+
                 "</tr>";
             });
             $("#products tbody").html(tbody);
@@ -106,11 +106,11 @@ $("#submitcart").submit(function(e) {
             }
     });
 });
-function addToCart(productId, title, price, status) {
+function addToCart(productId, price, status) {
     //prevent Default functionality
     var orderBean = {};
     orderBean.productId = productId;
-    orderBean.productName = title;
+    //orderBean.productName = title;
     orderBean.price = price;
     orderBean.status = status;
     orderBean.orderedBy = '<security:authorize access="isAuthenticated()"><security:authentication property="principal.username" /></security:authorize>';

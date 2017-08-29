@@ -9,8 +9,10 @@ import simple.mvc.app.mapper.OrderMapper;
 import simple.mvc.bean.OrderBean;
 import simple.mvc.jpa.Order;
 import simple.mvc.jpa.Product;
+import simple.mvc.jpa.User;
 import simple.mvc.repository.OrderRepository;
 import simple.mvc.repository.ProductRepository;
+import simple.mvc.repository.UserRepository;
 
 @Component
 public class OrderMapperImpl implements OrderMapper {
@@ -20,6 +22,9 @@ public class OrderMapperImpl implements OrderMapper {
     
     @Autowired
     private ProductRepository productRepo;
+    
+    @Autowired
+    private UserRepository userRepo;
     
     @Override
     public List<OrderBean> getAllOrders() {
@@ -70,7 +75,7 @@ public class OrderMapperImpl implements OrderMapper {
 
     private OrderBean convertJpaToBean(Order jpa) {
         return new OrderBean().setId(jpa.getId()).setProductId(jpa.getProduct().getId())
-                  .setProductName(jpa.getTitle()).setPrice(jpa.getPrice()).setOrderedBy(jpa.getOrderedBy())
+                  .setProductName(jpa.getTitle()).setPrice(jpa.getPrice()).setOrderedBy(jpa.getOrderedBy().getUsername())
                   .setStatus(jpa.getStatus()).setCreated(jpa.getCreated()).setUpdated(jpa.getUpdated());
     }
     
@@ -78,11 +83,12 @@ public class OrderMapperImpl implements OrderMapper {
         Order jpa = new Order();
         jpa.setId(bean.getId());
         Product product = productRepo.getProductById(bean.getProductId());
+        User user = userRepo.getUserByUsername(bean.getOrderedBy());
         jpa.setProduct(product);
         jpa.setPrice(product.getPrice());
         jpa.setTitle(product.getTitle());
         jpa.setStatus(bean.getStatus());
-        jpa.setOrderedBy(bean.getOrderedBy());
+        jpa.setOrderedBy(user);
         jpa.setCreated(bean.getCreated());
         jpa.setUpdated(bean.getUpdated());
         return jpa;

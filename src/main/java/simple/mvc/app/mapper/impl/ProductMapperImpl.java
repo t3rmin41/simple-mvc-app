@@ -38,4 +38,12 @@ public class ProductMapperImpl implements ProductMapper {
         return getProductBeansByProducts(productRepo.getAllProducts());
     }
 
+    @Override
+    public ProductBean getProductBeanById(Long id) {
+        return convertJpaToBean(productRepo.getProductById(id));
+    }
+
+    private ProductBean convertJpaToBean(Product jpa) {
+        return new ProductBean().setId(jpa.getId()).setTitle(jpa.getTitle()).setPrice(jpa.getPrice());
+    }
 }
