@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import simple.mvc.app.enums.OrderStatus;
 import simple.mvc.bean.OrderBean;
 import simple.mvc.service.OrderService;
 
@@ -48,5 +49,10 @@ public class OrderController {
     @RequestMapping(value = "/orders/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
     public @ResponseBody boolean deleteOrder(@PathVariable("id") Long id) {
         return orderService.deleteOrderById(id);
+    }
+    
+    @RequestMapping(value = "/orders/statuslist", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody OrderStatus[] getOrderStatusList() {
+        return OrderStatus.values();
     }
 }

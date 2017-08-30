@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ include file="/jsp/includes.jsp"%>
+<security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_SUPERVISOR', 'ROLE_MANAGER')" var="allowEditOrderStatus" />
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
