@@ -7,16 +7,20 @@ public enum OrderStatus {
   DELIVERED("Delivered"),
   COMPLETED("Completed");
   
-  private String status;
+  private String code;
   
   private OrderStatus(String status) {
-    this.status = status;
+    this.code = status;
+  }
+  
+  public String getCode() {
+    return this.code;
   }
   
   public static String getOrderStatusName(OrderStatus status) {
     for (OrderStatus current : OrderStatus.values()) {
       if (status.equals(current)) {
-        return current.status;
+        return current.code;
       }
     }
     return null;
@@ -24,7 +28,7 @@ public enum OrderStatus {
   
   public static OrderStatus getOrderStatusByName(String statusName) {
     for (OrderStatus current : OrderStatus.values()) {
-      if (current.status.equals(statusName)) {
+      if (current.code.equals(statusName)) {
         return current;
       }
     }

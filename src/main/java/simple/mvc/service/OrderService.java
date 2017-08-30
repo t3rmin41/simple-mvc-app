@@ -11,4 +11,5 @@ public interface OrderService {
     OrderBean createOrder(OrderBean bean);
     OrderBean updateOrder(OrderBean bean);
     boolean deleteOrderById(Long id);
+    List<OrderBean> getUserOrdersByUsername(String username);
 }

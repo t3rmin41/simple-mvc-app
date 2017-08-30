@@ -16,7 +16,14 @@
     <div>
         <table id="orders" border="1">
             <thead>
-                <tr><th>Title</th><th>Price</th><th>Status</th><th>Ordered by</th><th>Created</th><th>Updated</th><th>Actions</th></tr>
+                <c:choose>
+                    <c:when test="${allowEditOrderStatus}">
+                        <tr><th>Title</th><th>Price</th><th>Status</th><th>Ordered by</th><th>Created</th><th>Updated</th><th>Actions</th></tr>
+                    </c:when>
+                    <c:otherwise>
+                        <tr><th>Title</th><th>Price</th><th>Status</th><th>Ordered by</th><th>Created</th><th>Updated</th></tr>
+                    </c:otherwise>
+                </c:choose>
             </thead>
             <tbody>
             </tbody>
@@ -30,10 +37,15 @@
 <script>
 $(document).ready(function(){
     console.log("Orders ready!");
-    loadOrders();
+    var allowChangeOrderStatus = ${allowEditOrderStatus};
+    if (allowChangeOrderStatus) {
+        loadAllOrders();
+    } else {
+        loadUserOrders('<security:authorize access="isAuthenticated()"><security:authentication property="principal.username" /></security:authorize>');
+    }
 });
-function loadOrders() {
-    var statusList = getOrderStatusList();
+function loadAllOrders() {
+    var statusList = getOrderStatusMap();
     var allowChangeOrderStatus = ${allowEditOrderStatus};
     $.ajax({
         url: "/orders",
@@ -49,7 +61,15 @@ function loadOrders() {
                     var updated = new Date(value.updated);
                     updatedUTC = updated.toUTCString();
                 }
-                var statusCell = "<td>"+value.status+"</td>";
+                var statusCell = "";
+                var actionsCell = "";
+                if (allowChangeOrderStatus) {
+                	statusCell = "<td>"+value.status+"</td>";
+                    actionsCell = "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"updateOrderStatus("+value.id+")\">update order</div></td>";
+                } else {
+                    statusCell = "<td>"+value.status+"</td>";
+                    actionsCell = "";
+                }
                 tbody += 
                     "<tr>"+
                         "<td>"+value.productName+"</td>"+
@@ -58,7 +78,39 @@ function loadOrders() {
                         "<td>"+value.orderedBy+"</td>"+
                         "<td>"+created.toUTCString()+"</td>"+
                         "<td>"+updatedUTC+"</td>"+
-                        "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"updateOrderStatus("+value.id+")\">update order</div></td>"+
+                        actionsCell+
+                   "</tr>";
+            });
+            $("#orders tbody").html(tbody);
+        },
+        error: function(jqXhr, textStatus, errorThrown){
+            console.log(errorThrown);
+        }
+   });
+}
+function loadUserOrders(username) {
+    $.ajax({
+        url: "/orders/user/"+username,
+        type: "GET",
+        success: function(data, textStatus, jQxhr){
+            console.log(data);
+            tbody = "";
+            $.each(data, function(index, value){
+                var created = new Date(value.created);
+                var createdUTC = created.toUTCString();
+                var updatedUTC = undefined;
+                if (undefined != value.updated && null != value.updated) {
+                    var updated = new Date(value.updated);
+                    updatedUTC = updated.toUTCString();
+                }
+                tbody += 
+                    "<tr>"+
+                        "<td>"+value.productName+"</td>"+
+                        "<td>"+value.price+"</td>"+
+                        "<td>"+value.status+"</td>"+
+                        "<td>"+value.orderedBy+"</td>"+
+                        "<td>"+created.toUTCString()+"</td>"+
+                        "<td>"+updatedUTC+"</td>"+
                    "</tr>";
             });
             $("#orders tbody").html(tbody);
@@ -86,16 +138,19 @@ function updateOrderStatus(orderId) {
             }
     });
 }
-function getOrderStatusList() {
+function getOrderStatusMap() {
+    var statusMap = {};
     $.ajax({
-            url: "/orders/statuslist",
+            url: "/orders/statusmap",
             type: "GET",
             success: function(data, textStatus, jQxhr){
                 console.log(data);
+                statusMap = data;
             },
             error: function(jqXhr, textStatus, errorThrown){
                 console.log(errorThrown);
             }
     });
+    return statusMap;
 }
 </script>

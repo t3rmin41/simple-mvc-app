@@ -39,5 +39,10 @@ public class OrderServiceImpl implements OrderService {
     public boolean deleteOrderById(Long id) {
         return orderMapper.deleteOrderById(id);
     }
+
+    @Override
+    public List<OrderBean> getUserOrdersByUsername(String username) {
+        return orderMapper.getUserOrdersByUsername(username);
+    }
     
 }

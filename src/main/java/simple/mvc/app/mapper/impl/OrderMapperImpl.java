@@ -37,6 +37,16 @@ public class OrderMapperImpl implements OrderMapper {
     }
 
     @Override
+    public List<OrderBean> getUserOrdersByUsername(String username) {
+        List<Order> orders = orderRepo.getUserOrders(username);
+        List<OrderBean> beans = new ArrayList<OrderBean>();
+        for (Order jpa : orders) {
+            beans.add(convertJpaToBean(jpa));
+        }
+        return beans;
+    }
+    
+    @Override
     public OrderBean getOrderById(Long id) {
         return convertJpaToBean(orderRepo.getOrderById(id));
     }
@@ -93,5 +103,7 @@ public class OrderMapperImpl implements OrderMapper {
         jpa.setUpdated(bean.getUpdated());
         return jpa;
     }
+
+
     
 }

@@ -106,32 +106,50 @@ $("#submitcart").submit(function(e) {
             }
     });
 });
-function addToCart(productId, price, status) {
-    //prevent Default functionality
-    var orderBean = {};
-    orderBean.productId = productId;
-    //orderBean.productName = title;
-    orderBean.price = price;
-    orderBean.status = status;
-    orderBean.orderedBy = '<security:authorize access="isAuthenticated()"><security:authentication property="principal.username" /></security:authorize>';
-    $.ajax({
-            url: "/cart/addOrder",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(orderBean),
+function addToCart(productId, price) {
+    getOrderStatusMap().done(function(orderStatusMap){
+        var orderBean = {};
+        orderBean.productId = productId;
+        //orderBean.productName = title;
+        orderBean.price = price;
+        orderBean.status = "PENDING";
+        orderBean.orderedBy = '<security:authorize access="isAuthenticated()"><security:authentication property="principal.username" /></security:authorize>';
+        $.ajax({
+                url: "/cart/addOrder",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(orderBean),
+                success: function(data, textStatus, jQxhr){
+                    console.log(data);
+                    $("#submitCartStatus").html("");
+                    $("#submitCartStatus").css("display", "none");
+                    loadCart();
+                },
+                error: function(jqXhr, textStatus, errorThrown){
+                    $("#submitCartStatus").html("Failed to add product to cart : "+jqXhr.statusText);
+                    $("#submitCartStatus").css("background-color", "#F35A53");
+                    $("#submitCartStatus").css("display", "block");
+                    console.log(errorThrown);
+                }
+        });
+    });
+}
+function getOrderStatusMap() {
+    //var orderStatusMap = {};
+    return $.ajax({
+            url: "/orders/statusmap",
+            type: "GET",
             success: function(data, textStatus, jQxhr){
-                console.log(data);
-                $("#submitCartStatus").html("");
-                $("#submitCartStatus").css("display", "none");
-                loadCart();
+                return data;
+                //$.each(data, function(index, value){
+                //    orderStatusMap[index] = value;
+                //});
             },
             error: function(jqXhr, textStatus, errorThrown){
-                $("#submitCartStatus").html("Failed to add product to cart : "+jqXhr.statusText);
-                $("#submitCartStatus").css("background-color", "#F35A53");
-                $("#submitCartStatus").css("display", "block");
                 console.log(errorThrown);
             }
     });
+    //return orderStatusMap;
 }
 $(document).ready(function(){
     console.log("Products ready!");

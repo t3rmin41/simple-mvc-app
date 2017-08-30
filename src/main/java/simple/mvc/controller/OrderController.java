@@ -1,6 +1,8 @@
 package simple.mvc.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +33,11 @@ public class OrderController {
         return orderService.getAllOrders();
     }
     
+    @RequestMapping(value = "/orders/user/{username}", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody List<OrderBean> getUserOrders(@PathVariable("username") String username) {
+        return orderService.getUserOrdersByUsername(username);
+    }
+    
     @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody OrderBean getOrderById(@PathVariable("id") Long id) {
         return orderService.getOrderById(id);
@@ -51,8 +58,12 @@ public class OrderController {
         return orderService.deleteOrderById(id);
     }
     
-    @RequestMapping(value = "/orders/statuslist", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody OrderStatus[] getOrderStatusList() {
-        return OrderStatus.values();
+    @RequestMapping(value = "/orders/statusmap", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<OrderStatus, String> getOrderStatusList() {
+        Map<OrderStatus, String> statusMap = new HashMap<OrderStatus, String>();
+        for (OrderStatus status : OrderStatus.values()) {
+          statusMap.put(status, status.getCode());
+        }
+        return statusMap;
     }
 }
