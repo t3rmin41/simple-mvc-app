@@ -55,6 +55,15 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     @Transactional
+    public List<Order> getUserOrders(String username) {
+        String q = "SELECT o FROM Order o WHERE o.orderedBy = (SELECT u FROM User u WHERE u.username = :pusername)";
+        TypedQuery<Order> query = em.createQuery(q, Order.class);
+        query.setParameter("pusername", username);
+        return query.getResultList();
+    }
+    
+    @Override
+    @Transactional
     public Order updateOrder(Order jpa) {
         Calendar cal = Calendar.getInstance();
         //cal.set(Calendar.HOUR, 0);
@@ -79,5 +88,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return result;
     }
+
+
 
 }

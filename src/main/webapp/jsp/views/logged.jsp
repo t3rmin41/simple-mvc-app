@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ include file="/jsp/includes.jsp"%>
+<security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_SUPERVISOR', 'ROLE_MANAGER')" var="allowEditOrderStatus" />
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -18,16 +19,14 @@
     <div>
         <a href="/productsPage">Go to products page</a>
     </div>
-    <security:authorize access="hasRole('ROLE_ADMIN')">
+    <security:authorize access="hasAnyRole('ROLE_ADMIN')">
     <div>
         <a href="/usersPage">Go to users page</a>
     </div>
     </security:authorize>
-    <security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_SUPERVISOR')">
     <div>
         <a href="/ordersPage">Go to orders page</a>
     </div>
-    </security:authorize>
     </body>
 </html>
 <script>

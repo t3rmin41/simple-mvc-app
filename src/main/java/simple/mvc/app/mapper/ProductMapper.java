@@ -9,6 +9,8 @@ public interface ProductMapper {
 
     ProductBean getProductBeanByProduct(Product jpa);
     
+    ProductBean getProductBeanById(Long id);
+    
     List<ProductBean> getProductBeansByProducts(List<Product> jpas);
     
     List<ProductBean> getAllProducts();

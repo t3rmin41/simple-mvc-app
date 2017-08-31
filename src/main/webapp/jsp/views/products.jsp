@@ -55,7 +55,7 @@ function loadAllProducts() {
                 tbody += "<tr>"+
                   "<td>"+value.title+"</td>"+
                   "<td>"+value.price+"</td>"+
-                  "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+value.id+",'"+value.title+"','"+value.price+"','new')\">Add to cart</div></td>"+
+                  "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+value.id+",'"+value.price+"','new')\">Add to cart</div></td>"+
                 "</tr>";
             });
             $("#products tbody").html(tbody);
@@ -106,36 +106,49 @@ $("#submitcart").submit(function(e) {
             }
     });
 });
-function addToCart(productId, title, price, status) {
-    //prevent Default functionality
-    var orderBean = {};
-    orderBean.productId = productId;
-    orderBean.productName = title;
-    orderBean.price = price;
-    orderBean.status = status;
-    orderBean.orderedBy = '<security:authorize access="isAuthenticated()"><security:authentication property="principal.username" /></security:authorize>';
-    $.ajax({
-            url: "/cart/addOrder",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(orderBean),
+function addToCart(productId, price) {
+    getOrderStatusMap().done(function(orderStatusMap){
+        var orderBean = {};
+        orderBean.productId = productId;
+        //orderBean.productName = title;
+        orderBean.price = price;
+        orderBean.status = "PENDING";
+        orderBean.orderedBy = '<security:authorize access="isAuthenticated()"><security:authentication property="principal.username" /></security:authorize>';
+        $.ajax({
+                url: "/cart/addOrder",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(orderBean),
+                success: function(data, textStatus, jQxhr){
+                    console.log(data);
+                    $("#submitCartStatus").html("");
+                    $("#submitCartStatus").css("display", "none");
+                    loadCart();
+                },
+                error: function(jqXhr, textStatus, errorThrown){
+                    $("#submitCartStatus").html("Failed to add product to cart : "+jqXhr.statusText);
+                    $("#submitCartStatus").css("background-color", "#F35A53");
+                    $("#submitCartStatus").css("display", "block");
+                    console.log(errorThrown);
+                }
+        });
+    });
+}
+function getOrderStatusMap() {
+    return $.ajax({
+            url: "/orders/statusmap",
+            type: "GET",
             success: function(data, textStatus, jQxhr){
-                console.log(data);
-                $("#submitCartStatus").html("");
-                $("#submitCartStatus").css("display", "none");
-                loadCart();
+                return data;
             },
             error: function(jqXhr, textStatus, errorThrown){
-                $("#submitCartStatus").html("Failed to add product to cart : "+jqXhr.statusText);
-                $("#submitCartStatus").css("background-color", "#F35A53");
-                $("#submitCartStatus").css("display", "block");
                 console.log(errorThrown);
             }
     });
 }
 $(document).ready(function(){
-    console.log("Products ready!");
     loadAllProducts();
     loadCart();
+    console.log("Products ready!");
 });
 </script>

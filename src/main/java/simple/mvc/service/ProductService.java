@@ -7,4 +7,6 @@ import simple.mvc.bean.ProductBean;
 public interface ProductService {
 
     List<ProductBean> getAllProducts();
+    
+    ProductBean getProductBeanById(Long id);
 }

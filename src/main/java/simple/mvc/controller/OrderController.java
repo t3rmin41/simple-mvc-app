@@ -1,6 +1,8 @@
 package simple.mvc.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import simple.mvc.app.enums.OrderStatus;
 import simple.mvc.bean.OrderBean;
 import simple.mvc.service.OrderService;
 
@@ -28,6 +31,11 @@ public class OrderController {
     @RequestMapping(value = "/orders", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody List<OrderBean> getOrders() {
         return orderService.getAllOrders();
+    }
+    
+    @RequestMapping(value = "/orders/user/{username}", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody List<OrderBean> getUserOrders(@PathVariable("username") String username) {
+        return orderService.getUserOrdersByUsername(username);
     }
     
     @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET, produces = "application/json")
@@ -48,5 +56,14 @@ public class OrderController {
     @RequestMapping(value = "/orders/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
     public @ResponseBody boolean deleteOrder(@PathVariable("id") Long id) {
         return orderService.deleteOrderById(id);
+    }
+    
+    @RequestMapping(value = "/orders/statusmap", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<OrderStatus, String> getOrderStatusMap() {
+        Map<OrderStatus, String> statusMap = new HashMap<OrderStatus, String>();
+        for (OrderStatus status : OrderStatus.values()) {
+          statusMap.put(status, status.getCode());
+        }
+        return statusMap;
     }
 }

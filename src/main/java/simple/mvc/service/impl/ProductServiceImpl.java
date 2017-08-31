@@ -19,5 +19,10 @@ public class ProductServiceImpl implements ProductService {
   public List<ProductBean> getAllProducts() {
       return productMapper.getAllProducts();
   }
+
+  @Override
+  public ProductBean getProductBeanById(Long id) {
+      return productMapper.getProductBeanById(id);
+  }
   
 }

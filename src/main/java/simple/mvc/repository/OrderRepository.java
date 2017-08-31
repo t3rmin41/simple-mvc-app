@@ -10,6 +10,8 @@ public interface OrderRepository {
     
     List<Order> getOrders();
     
+    List<Order> getUserOrders(String username);
+    
     Order getOrderById(Long id);
     
     Order updateOrder(Order order);

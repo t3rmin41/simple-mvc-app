@@ -17,4 +17,6 @@ public interface OrderMapper {
     boolean deleteOrderById(Long id);
     
     OrderBean convertOrderToBeanById(Long id);
+    
+    List<OrderBean> getUserOrdersByUsername(String username);
 }

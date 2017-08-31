@@ -2,6 +2,7 @@ package simple.mvc.app.mapper;
 
 import java.util.List;
 
+import simple.mvc.app.enums.RoleType;
 import simple.mvc.bean.UserBean;
 import simple.mvc.jpa.Role;
 

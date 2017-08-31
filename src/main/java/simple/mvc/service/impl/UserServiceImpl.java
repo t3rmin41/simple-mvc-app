@@ -1,10 +1,12 @@
 package simple.mvc.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import simple.mvc.app.enums.RoleType;
 import simple.mvc.app.mapper.UserMapper;
 import simple.mvc.bean.UserBean;
 import simple.mvc.service.UserService;
@@ -22,7 +24,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBean createUser(UserBean bean) {
-        return userMapper.createUser(bean);
+        if (checkValidRoles(bean.getRoles())) {
+          return userMapper.createUser(bean);
+        }
+        return null;
     }
 
     @Override
@@ -37,7 +42,10 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public UserBean updateUser(UserBean bean) {
-        return userMapper.updateUser(bean);
+        if (checkValidRoles(bean.getRoles())) {
+          return userMapper.updateUser(bean);
+        }
+        return null;
     }
 
     @Override
@@ -50,4 +58,15 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserBeanByUsername(username);
     }
 
+    private boolean checkValidRoles(List<String> roles) {
+      if (null == roles || 0 == roles.size()) {
+        return false;
+      }
+      for (String role : roles) {
+        if (!Arrays.asList(RoleType.values()).contains(RoleType.getRoleTypeByName(role))) {
+          return false;
+        }
+      }
+      return true;
+    }
 }

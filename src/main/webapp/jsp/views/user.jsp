@@ -24,10 +24,7 @@
                     <tr><td>Username: </td><td><input type="text" name="username" value=""></td></tr>
                     <tr><td>Password: </td><td><input type="password" name="password" value=""></td></tr>
                     <tr><td>Roles: </td>
-                        <td>
-                            <input type="checkbox" name="roles[]" value="ADMIN">ADMIN <br />
-                            <input type="checkbox" name="roles[]" value="USER">USER <br />
-                            <input type="checkbox" name="roles[]" value="GUEST">GUEST <br />
+                        <td id="rolesInput">
                         </td>
                     <tr><td colspan="2"><input type="submit" value="Edit user" /></td></tr>
                 </tbody>
@@ -57,6 +54,24 @@ function loadUser() {
                     return obj.value && obj.value == rolename;
                 }).attr('checked', true);
             });
+        },
+        error: function(jqXhr, textStatus, errorThrown){
+            console.log(errorThrown);
+        }
+   });
+}
+function loadAllRoles() {
+    return $.ajax({
+        url: "/users/roles",
+        type: "GET",
+        success: function(data, textStatus, jQxhr){
+            console.log(data);
+            var tdRoles = "";
+            $.each(data, function(index, role){
+                tdRoles += "<input type=\"checkbox\" name=\"roles[]\" value=\""+index+"\" />"+role+"<br />";
+            });
+            $("#edituser tbody tr td#rolesInput").html(tdRoles);
+            return data;
         },
         error: function(jqXhr, textStatus, errorThrown){
             console.log(errorThrown);
@@ -99,7 +114,8 @@ $("#edituser").submit(function(e) {
     });
 });
 $(document).ready(function(){
-    loadUser();
+    //loadUser();
+    loadAllRoles().done(loadUser());
     $("#updateSuccess").css("display", "none");
     console.log("User ready!");
 });

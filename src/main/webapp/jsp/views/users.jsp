@@ -32,11 +32,7 @@
                     <tr><td>Username: </td><td><input type="text" name="username" value=""></td></tr>
                     <tr><td>Password: </td><td><input type="password" name="password" value=""></td></tr>
                     <tr><td>Roles: </td>
-                        <td>
-                            <input type="checkbox" name="roles[]" value="ADMIN">ADMIN <br />
-                            <input type="checkbox" name="roles[]" value="SUPERVISOR">SUPERVISOR <br />
-                            <input type="checkbox" name="roles[]" value="USER">USER <br />
-                            <input type="checkbox" name="roles[]" value="GUEST">GUEST <br />
+                        <td id="rolesInput">
                         </td>
                     <tr><td colspan="2"><input type="submit" value="Create user" /></td></tr>
                 </tbody>
@@ -75,6 +71,23 @@ function loadAllUsers() {
         }
    });
 }
+function loadAllRoles() {
+    $.ajax({
+        url: "/users/roles",
+        type: "GET",
+        success: function(data, textStatus, jQxhr){
+            console.log(data);
+            var tdRoles = "";
+            $.each(data, function(index, role){
+                tdRoles += "<input type=\"checkbox\" name=\"roles[]\" value=\""+index+"\" />"+role+"<br />";
+            });
+            $("#adduser tbody tr td#rolesInput").html(tdRoles);
+        },
+        error: function(jqXhr, textStatus, errorThrown){
+            console.log(errorThrown);
+        }
+   });
+}
 $("#adduser").submit(function(e) {
     //prevent Default functionality
     e.preventDefault();
@@ -83,7 +96,7 @@ $("#adduser").submit(function(e) {
     userBean.password = $("#adduser input[name=password]").val();
     var roles = [];
     $("#adduser input[name='roles[]']:checked").each(function(){
-    	roles.push($(this).val());
+        roles.push($(this).val());
     });
     userBean.roles = roles;
     $.ajax({
@@ -120,6 +133,7 @@ function deleteUserById(id) {
 }
 $(document).ready(function(){
     loadAllUsers();
+    loadAllRoles();
     console.log("Users ready!");
 });
 </script>
