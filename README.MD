@@ -1,0 +1,1 @@
+### Minimalistic online shop application using SpringBoot, Spring Security, Hibernate
