@@ -135,25 +135,20 @@ function addToCart(productId, price) {
     });
 }
 function getOrderStatusMap() {
-    //var orderStatusMap = {};
     return $.ajax({
             url: "/orders/statusmap",
             type: "GET",
             success: function(data, textStatus, jQxhr){
                 return data;
-                //$.each(data, function(index, value){
-                //    orderStatusMap[index] = value;
-                //});
             },
             error: function(jqXhr, textStatus, errorThrown){
                 console.log(errorThrown);
             }
     });
-    //return orderStatusMap;
 }
 $(document).ready(function(){
-    console.log("Products ready!");
     loadAllProducts();
     loadCart();
+    console.log("Products ready!");
 });
 </script>

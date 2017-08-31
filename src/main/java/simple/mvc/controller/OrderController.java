@@ -59,7 +59,7 @@ public class OrderController {
     }
     
     @RequestMapping(value = "/orders/statusmap", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody Map<OrderStatus, String> getOrderStatusList() {
+    public @ResponseBody Map<OrderStatus, String> getOrderStatusMap() {
         Map<OrderStatus, String> statusMap = new HashMap<OrderStatus, String>();
         for (OrderStatus status : OrderStatus.values()) {
           statusMap.put(status, status.getCode());

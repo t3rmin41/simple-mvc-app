@@ -30,11 +30,19 @@ public enum RoleType {
   
   public static RoleType getRoleTypeByName(String typeName) {
     for (RoleType current : RoleType.values()) {
-      if (current.code.equals(typeName)) {
+      if (current.name().equals(typeName)) {
         return current;
       }
     }
     return null;
   }
   
+  public static RoleType getRoleTypeByCode(String typeName) {
+    for (RoleType current : RoleType.values()) {
+      if (current.code.equals(typeName)) {
+        return current;
+      }
+    }
+    return null;
+  }
 }

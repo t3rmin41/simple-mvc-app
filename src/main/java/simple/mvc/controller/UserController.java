@@ -1,7 +1,9 @@
 package simple.mvc.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import simple.mvc.app.enums.OrderStatus;
+import simple.mvc.app.enums.RoleType;
 import simple.mvc.bean.UserBean;
 import simple.mvc.service.UserService;
 
@@ -58,5 +62,14 @@ public class UserController {
     @RequestMapping(value = "/users/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
     public @ResponseBody boolean deleteUser(@PathVariable("id") Long id) {
         return userService.deleteUserById(id);
+    }
+
+    @RequestMapping(value = "/users/roles", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<RoleType, String> getUserRoleMap() {
+        Map<RoleType, String> roleMap = new HashMap<RoleType, String>();
+        for (RoleType role : RoleType.values()) {
+          roleMap.put(role, role.getCode());
+        }
+        return roleMap;
     }
 }

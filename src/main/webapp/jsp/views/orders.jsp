@@ -36,79 +36,91 @@
 </html>
 <script>
 $(document).ready(function(){
-    console.log("Orders ready!");
     var allowChangeOrderStatus = ${allowEditOrderStatus};
     if (allowChangeOrderStatus) {
         loadAllOrders();
     } else {
         loadUserOrders('<security:authorize access="isAuthenticated()"><security:authentication property="principal.username" /></security:authorize>');
     }
+    console.log("Orders ready!");
 });
 function loadAllOrders() {
-    var statusList = getOrderStatusMap();
-    var allowChangeOrderStatus = ${allowEditOrderStatus};
-    $.ajax({
-        url: "/orders",
-        type: "GET",
-        success: function(data, textStatus, jQxhr){
-            console.log(data);
-            tbody = "";
-            $.each(data, function(index, value){
-                var created = new Date(value.created);
-                var createdUTC = created.toUTCString();
-                var updatedUTC = undefined;
-                if (undefined != value.updated && null != value.updated) {
-                    var updated = new Date(value.updated);
-                    updatedUTC = updated.toUTCString();
-                }
-                var statusCell = "";
-                var actionsCell = "";
-                if (allowChangeOrderStatus) {
-                	statusCell = "<td>"+value.status+"</td>";
-                    actionsCell = "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"updateOrderStatus("+value.id+")\">update order</div></td>";
-                } else {
-                    statusCell = "<td>"+value.status+"</td>";
-                    actionsCell = "";
-                }
-                tbody += 
-                    "<tr>"+
-                        "<td>"+value.productName+"</td>"+
-                        "<td>"+value.price+"</td>"+
-                        statusCell+
-                        "<td>"+value.orderedBy+"</td>"+
-                        "<td>"+created.toUTCString()+"</td>"+
-                        "<td>"+updatedUTC+"</td>"+
-                        actionsCell+
-                   "</tr>";
-            });
-            $("#orders tbody").html(tbody);
-        },
-        error: function(jqXhr, textStatus, errorThrown){
-            console.log(errorThrown);
-        }
-   });
+    getOrderStatusMap().done(function(orderStatusMap){
+        var allowChangeOrderStatus = ${allowEditOrderStatus};
+        $.ajax({
+            url: "/orders",
+            type: "GET",
+            success: function(data, textStatus, jQxhr){
+                console.log(data);
+                tbody = "";
+                $.each(data, function(index, order){
+                    var created = new Date(order.created);
+                    var createdUTC = created.toUTCString();
+                    var updatedUTC = undefined;
+                    if (undefined != order.updated && null != order.updated) {
+                        var updated = new Date(order.updated);
+                        updatedUTC = updated.toUTCString();
+                    }
+                    var statusCell = "";
+                    var actionsCell = "";
+                    if (allowChangeOrderStatus) {
+                        statusCell = "<td><select id=\"orderStatusId-"+order.id+"\" name=\"orderStatus\-"+order.id+"\">";
+                        $.each(orderStatusMap, function(index, status){
+                            statusCell += "<option value=\""+index+"\" "+(order.status == index ? "selected" : "")+">"+status+"</option>";
+                        });
+                        statusCell += "</td>";
+                        actionsCell = "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"updateOrderStatus("+order.id+",)\">update order</div></td>";
+                    } else {
+                        statusCell = "<td>"+order.status+"</td>";
+                        actionsCell = "";
+                    }
+                    tbody += 
+                        "<tr>"+
+                            "<td>"+order.productName+"</td>"+
+                            "<td>"+order.price+"</td>"+
+                            statusCell+
+                            "<td>"+order.orderedBy+"</td>"+
+                            "<td>"+created.toUTCString()+"</td>"+
+                            "<td>"+updatedUTC+"</td>"+
+                            actionsCell+
+                       "</tr>";
+                });
+                $("#orders tbody").html(tbody);
+            },
+            error: function(jqXhr, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+       });
+    });
 }
 function loadUserOrders(username) {
-    $.ajax({
+    getOrderStatusMap().done(function(orderStatusMap){
+      $.ajax({
         url: "/orders/user/"+username,
         type: "GET",
         success: function(data, textStatus, jQxhr){
             console.log(data);
             tbody = "";
-            $.each(data, function(index, value){
-                var created = new Date(value.created);
+            $.each(data, function(index, order){
+                var created = new Date(order.created);
                 var createdUTC = created.toUTCString();
                 var updatedUTC = undefined;
-                if (undefined != value.updated && null != value.updated) {
-                    var updated = new Date(value.updated);
+                if (undefined != order.updated && null != order.updated) {
+                    var updated = new Date(order.updated);
                     updatedUTC = updated.toUTCString();
                 }
+                var statusText = "";
+                $.each(orderStatusMap, function(index, status){
+                    if (order.status == index) {
+                        statusText = status;
+                    }
+                });
                 tbody += 
                     "<tr>"+
-                        "<td>"+value.productName+"</td>"+
-                        "<td>"+value.price+"</td>"+
-                        "<td>"+value.status+"</td>"+
-                        "<td>"+value.orderedBy+"</td>"+
+                        "<td>"+order.productName+"</td>"+
+                        "<td>"+order.price+"</td>"+
+                        "<td>"+statusText+"</td>"+
+                        "<td>"+order.orderedBy+"</td>"+
                         "<td>"+created.toUTCString()+"</td>"+
                         "<td>"+updatedUTC+"</td>"+
                    "</tr>";
@@ -118,12 +130,13 @@ function loadUserOrders(username) {
         error: function(jqXhr, textStatus, errorThrown){
             console.log(errorThrown);
         }
-   });
+    });
+  });
 }
 function updateOrderStatus(orderId) {
     var orderBean = {};
     orderBean.id = orderId;
-    orderBean.status = status;
+    orderBean.status = $("#orderStatusId-"+orderId+" > option:selected").val();
     $.ajax({
             url: "/orders/update",
             type: "PUT",
@@ -131,7 +144,7 @@ function updateOrderStatus(orderId) {
             data: JSON.stringify(orderBean),
             success: function(data, textStatus, jQxhr){
                 console.log(data);
-                loadOrders();
+                loadAllOrders();
             },
             error: function(jqXhr, textStatus, errorThrown){
                 console.log(errorThrown);
@@ -139,18 +152,15 @@ function updateOrderStatus(orderId) {
     });
 }
 function getOrderStatusMap() {
-    var statusMap = {};
-    $.ajax({
+    return $.ajax({
             url: "/orders/statusmap",
             type: "GET",
             success: function(data, textStatus, jQxhr){
-                console.log(data);
-                statusMap = data;
+                return data;
             },
             error: function(jqXhr, textStatus, errorThrown){
                 console.log(errorThrown);
             }
     });
-    return statusMap;
 }
 </script>
