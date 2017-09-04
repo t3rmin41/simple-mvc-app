@@ -2,8 +2,8 @@ package simple.mvc.app.enums;
 
 public enum RoleType {
 
-  GUEST("Guest"),
-  USER("User"),
+  //GUEST("Guest"),
+  //USER("User"),
   CUSTOMER("Customer"),
   SUPERVISOR("Supervisor"),
   MANAGER("Manager"),
