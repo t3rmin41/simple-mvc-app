@@ -64,7 +64,7 @@ public class ProductRepositoryImpl implements ProductRepository {
       queryOrder.setParameter("pstatus", OrderStatus.PRODUCT_DELETED.toString());
       int orderQueryStatus = queryOrder.executeUpdate();
       
-      return true;
+      return productQueryStatus == orderQueryStatus;
     }
 
     @Transactional
