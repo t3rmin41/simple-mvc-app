@@ -22,8 +22,11 @@
             </tbody>
         </table>
     </div>
-    <div>
-        <form id="addproduct">
+    <c:choose>
+       <c:when test="${allowEditProduct}">
+        <hr /> 
+        <div>
+         <form id="addproduct">
             <table border="1">
                 <thead>
                     <tr><td colspan="2">Add new product</td></tr>
@@ -34,8 +37,11 @@
                     <tr><td colspan="2"><input type="submit" value="Create product" /></td></tr>
                 </tbody>
             </table>
-        </form>
-    </div>
+          </form>
+         </div>
+       </c:when>
+    </c:choose>
+    <hr />
     <div id="submitCartStatus" style="display:none">
     </div>
     <div style="display:inline">
@@ -76,8 +82,8 @@ function loadAllProducts() {
                       "<td><a href=\"/productview/"+product.id+"\">"+product.title+"</a></td>"+
                       "<td>"+product.price+"</td>"+
                       "<td>"+
-                         "<div style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+product.id+",'"+product.price+"','new')\">Add to cart</div>"+
-                         "<div style=\"text-decoration: underline; cursor: pointer\" onclick=\"deleteProduct("+product.id+")\">Delete product</div>"+
+                         "<span style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+product.id+",'"+product.price+"','new')\">Add to cart</span> "+
+                         "<span style=\"text-decoration: underline; cursor: pointer\" onclick=\"deleteProduct("+product.id+")\">Delete product</span>"+
                       "</td>"+
                     "</tr>";
                 });
@@ -86,7 +92,7 @@ function loadAllProducts() {
                     tbody += "<tr>"+
                       "<td>"+product.title+"</td>"+
                       "<td>"+product.price+"</td>"+
-                      "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+product.id+",'"+product.price+"','new')\">Add to cart</div></td>"+
+                      "<td><span style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+product.id+",'"+product.price+"','new')\">Add to cart</span></td>"+
                     "</tr>";
                 });
             }
@@ -166,6 +172,41 @@ function addToCart(productId, price) {
         });
     });
 }
+function getOrderStatusMap() {
+    return $.ajax({
+            url: "/orders/statusmap",
+            type: "GET",
+            success: function(data, textStatus, jQxhr){
+                return data;
+            },
+            error: function(jqXhr, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+    });
+}
+<c:choose>
+  <c:when test="${allowEditProduct}">
+$("#addproduct").submit(function(e) {
+    //prevent Default functionality
+    e.preventDefault();
+    var productBean = {};
+    productBean.title = $("#addproduct input[name=title]").val();
+    productBean.price = $("#addproduct input[name=price]").val();
+    $.ajax({
+            url: "/products/create",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(productBean),
+            success: function(data, textStatus, jQxhr){
+                console.log(data);
+                resetProductAddForm();
+                loadAllProducts();
+            },
+            error: function(jqXhr, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+    });
+});
 function deleteProduct(id) {
     //e.preventDefault();
     $.ajax({
@@ -183,18 +224,8 @@ function deleteProduct(id) {
         }
     });
 }
-function getOrderStatusMap() {
-    return $.ajax({
-            url: "/orders/statusmap",
-            type: "GET",
-            success: function(data, textStatus, jQxhr){
-                return data;
-            },
-            error: function(jqXhr, textStatus, errorThrown){
-                console.log(errorThrown);
-            }
-    });
-}
+  </c:when>
+</c:choose>
 $(document).ready(function(){
     loadAllProducts();
     loadCart();

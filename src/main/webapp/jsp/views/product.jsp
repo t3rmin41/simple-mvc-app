@@ -60,7 +60,7 @@ $("#editproduct").submit(function(e) {
             url: "/products/update",
             type: "PUT",
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(userBean),
+            data: JSON.stringify(productBean),
             success: function(data, textStatus, jQxhr){
                 console.log(data);
                 resetProductEditForm();
