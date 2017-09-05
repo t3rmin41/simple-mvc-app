@@ -14,4 +14,10 @@ public interface ProductMapper {
     List<ProductBean> getProductBeansByProducts(List<Product> jpas);
     
     List<ProductBean> getAllProducts();
+    
+    ProductBean createProduct(ProductBean bean);
+    
+    ProductBean updateProduct(ProductBean bean);
+    
+    boolean deleteProductById(Long id);
 }

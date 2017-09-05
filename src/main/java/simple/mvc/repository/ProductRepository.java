@@ -9,4 +9,10 @@ public interface ProductRepository {
     List<Product> getAllProducts();
     
     Product getProductById(Long id);
+    
+    Product createProduct(Product jpa);
+    
+    Product updateProduct(Product jpa);
+    
+    boolean deleteProductById(Long id);
 }

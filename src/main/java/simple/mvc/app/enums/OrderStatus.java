@@ -5,6 +5,7 @@ public enum OrderStatus {
   PENDING("Pending"),
   IN_PROGRESS("In progress"),
   DELIVERED("Delivered"),
+  PRODUCT_DELETED("Product deleted"),
   COMPLETED("Completed");
   
   private String code;

@@ -24,5 +24,20 @@ public class ProductServiceImpl implements ProductService {
   public ProductBean getProductBeanById(Long id) {
       return productMapper.getProductBeanById(id);
   }
+
+  @Override
+  public ProductBean createProduct(ProductBean bean) {
+    return productMapper.createProduct(bean);
+  }
+
+  @Override
+  public ProductBean updateProduct(ProductBean bean) {
+    return productMapper.updateProduct(bean);
+  }
+
+  @Override
+  public boolean deleteProductById(Long id) {
+    return productMapper.deleteProductById(id);
+  }
   
 }
