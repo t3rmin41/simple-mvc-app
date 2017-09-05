@@ -56,7 +56,7 @@ public class ProductMapperImpl implements ProductMapper {
     public ProductBean updateProduct(ProductBean bean) {
       Product jpa = productRepo.getProductById(bean.getId());
       jpa.setPrice(bean.getPrice());
-      return convertJpaToBean(jpa);
+      return convertJpaToBean(productRepo.updateProduct(jpa));
     }
 
     @Override

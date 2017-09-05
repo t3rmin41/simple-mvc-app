@@ -17,7 +17,10 @@
         <form id="editproduct">
             <table border="1">
                 <thead>
-                    <tr><td colspan="2">Edit product</td></tr>
+                    <tr>
+                        <td>Edit product</td>
+                        <td id="productTitle"></td>
+                    </tr>
                 </thead>
                 <tbody>
                     <input type="hidden" name="productId" value="" />
@@ -43,6 +46,7 @@ function loadProduct() {
         success: function(data, textStatus, jQxhr){
             console.log(data);
             $("#editproduct input[name=productId]").val(data.id);
+            $("#editproduct #productTitle").html(data.title);
             $("#editproduct input[name=price]").val(data.price);
         },
         error: function(jqXhr, textStatus, errorThrown){
