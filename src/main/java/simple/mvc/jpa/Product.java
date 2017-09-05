@@ -19,6 +19,8 @@ public class Product {
   private String title;
   @Column(name = "PRICE")
   private Double price;
+  @Column(name = "DELETED")
+  private boolean deleted = false;
 
   public Long getId() {
     return id;
@@ -37,6 +39,12 @@ public class Product {
   }
   public void setPrice(Double price) {
     this.price = price;
+  }
+  public boolean isDeleted() {
+    return deleted;
+  }
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 
 }

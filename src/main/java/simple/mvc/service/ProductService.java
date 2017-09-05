@@ -9,4 +9,10 @@ public interface ProductService {
     List<ProductBean> getAllProducts();
     
     ProductBean getProductBeanById(Long id);
+    
+    ProductBean createProduct(ProductBean bean);
+    
+    ProductBean updateProduct(ProductBean bean);
+    
+    boolean deleteProductById(Long id);
 }

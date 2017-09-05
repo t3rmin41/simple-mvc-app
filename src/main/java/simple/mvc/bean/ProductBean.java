@@ -5,6 +5,7 @@ public class ProductBean {
     private Long id;
     private String title;
     private Double price;
+    private boolean deleted;
 
     public Long getId() {
       return id;
@@ -26,5 +27,12 @@ public class ProductBean {
     public ProductBean setPrice(Double price) {
         this.price = price;
         return this;
+    }
+    public boolean isDeleted() {
+      return deleted;
+    }
+    public ProductBean setDeleted(boolean deleted) {
+      this.deleted = deleted;
+      return this;
     }
 }

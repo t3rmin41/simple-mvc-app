@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ include file="/jsp/includes.jsp"%>
+<security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_SUPERVISOR', 'ROLE_MANAGER')" var="allowEditProduct" />
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -21,6 +22,26 @@
             </tbody>
         </table>
     </div>
+    <c:choose>
+       <c:when test="${allowEditProduct}">
+        <hr /> 
+        <div>
+         <form id="addproduct">
+            <table border="1">
+                <thead>
+                    <tr><td colspan="2">Add new product</td></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Product title: </td><td><input type="text" name="title" value=""></td></tr>
+                    <tr><td>Price: </td><td><input type="text" name="price" value=""></td></tr>
+                    <tr><td colspan="2"><input type="submit" value="Create product" /></td></tr>
+                </tbody>
+            </table>
+          </form>
+         </div>
+       </c:when>
+    </c:choose>
+    <hr />
     <div id="submitCartStatus" style="display:none">
     </div>
     <div style="display:inline">
@@ -44,20 +65,37 @@
     </body>
 </html>
 <script>
+function resetProductAddForm() {
+    $("#addproduct").get(0).reset();
+}
 function loadAllProducts() {
+    var allowEditProduct = ${allowEditProduct};
     $.ajax({
         url: "/products",
         type: "GET",
         success: function(data, textStatus, jQxhr){
             console.log(data);
             tbody = "";
-            $.each(data, function(index, value){
-                tbody += "<tr>"+
-                  "<td>"+value.title+"</td>"+
-                  "<td>"+value.price+"</td>"+
-                  "<td><div style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+value.id+",'"+value.price+"','new')\">Add to cart</div></td>"+
-                "</tr>";
-            });
+            if (allowEditProduct) {
+                $.each(data, function(index, product){
+                    tbody += "<tr>"+
+                      "<td><a href=\"/productview/"+product.id+"\">"+product.title+"</a></td>"+
+                      "<td>"+product.price+"</td>"+
+                      "<td>"+
+                         "<span style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+product.id+",'"+product.price+"','new')\">Add to cart</span> "+
+                         "<span style=\"text-decoration: underline; cursor: pointer\" onclick=\"deleteProduct("+product.id+")\">Delete product</span>"+
+                      "</td>"+
+                    "</tr>";
+                });
+            } else {
+                $.each(data, function(index, product){
+                    tbody += "<tr>"+
+                      "<td>"+product.title+"</td>"+
+                      "<td>"+product.price+"</td>"+
+                      "<td><span style=\"text-decoration: underline; cursor: pointer\" onclick=\"addToCart("+product.id+",'"+product.price+"','new')\">Add to cart</span></td>"+
+                    "</tr>";
+                });
+            }
             $("#products tbody").html(tbody);
         },
         error: function(jqXhr, textStatus, errorThrown){
@@ -146,6 +184,48 @@ function getOrderStatusMap() {
             }
     });
 }
+<c:choose>
+  <c:when test="${allowEditProduct}">
+$("#addproduct").submit(function(e) {
+    //prevent Default functionality
+    e.preventDefault();
+    var productBean = {};
+    productBean.title = $("#addproduct input[name=title]").val();
+    productBean.price = $("#addproduct input[name=price]").val();
+    $.ajax({
+            url: "/products/create",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(productBean),
+            success: function(data, textStatus, jQxhr){
+                console.log(data);
+                resetProductAddForm();
+                loadAllProducts();
+            },
+            error: function(jqXhr, textStatus, errorThrown){
+                console.log(errorThrown);
+            }
+    });
+});
+function deleteProduct(id) {
+    //e.preventDefault();
+    $.ajax({
+        url: "/products/delete/"+id,
+        type: "DELETE",
+        success: function(data, textStatus, jQxhr){
+            console.log(data);
+            resetProductAddForm();
+            loadAllProducts();
+        },
+        error: function(jqXhr, textStatus, errorThrown){
+            console.log(errorThrown);
+            resetProductAddForm();
+            loadAllProducts();
+        }
+    });
+}
+  </c:when>
+</c:choose>
 $(document).ready(function(){
     loadAllProducts();
     loadCart();

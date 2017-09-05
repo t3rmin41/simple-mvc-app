@@ -43,7 +43,29 @@ public class ProductMapperImpl implements ProductMapper {
         return convertJpaToBean(productRepo.getProductById(id));
     }
 
-    private ProductBean convertJpaToBean(Product jpa) {
-        return new ProductBean().setId(jpa.getId()).setTitle(jpa.getTitle()).setPrice(jpa.getPrice());
+    @Override
+    public ProductBean createProduct(ProductBean bean) {
+      Product jpa = new Product();
+      jpa.setPrice(bean.getPrice());
+      jpa.setTitle(bean.getTitle());
+      jpa = productRepo.createProduct(jpa);
+      return convertJpaToBean(jpa);
     }
+
+    @Override
+    public ProductBean updateProduct(ProductBean bean) {
+      Product jpa = productRepo.getProductById(bean.getId());
+      jpa.setPrice(bean.getPrice());
+      return convertJpaToBean(productRepo.updateProduct(jpa));
+    }
+
+    @Override
+    public boolean deleteProductById(Long id) {
+      return productRepo.deleteProductById(id);
+    }
+    
+    private ProductBean convertJpaToBean(Product jpa) {
+        return new ProductBean().setId(jpa.getId()).setTitle(jpa.getTitle()).setPrice(jpa.getPrice()).setDeleted(jpa.isDeleted());
+    }
+
 }

@@ -63,7 +63,7 @@ function loadAllOrders() {
                     }
                     var statusCell = "";
                     var actionsCell = "";
-                    if (allowChangeOrderStatus) {
+                    if (allowChangeOrderStatus && "PRODUCT_DELETED" != order.status) {
                         statusCell = "<td><select id=\"orderStatusId-"+order.id+"\" name=\"orderStatus\-"+order.id+"\">";
                         $.each(orderStatusMap, function(index, status){
                             statusCell += "<option value=\""+index+"\" "+(order.status == index ? "selected" : "")+">"+status+"</option>";
