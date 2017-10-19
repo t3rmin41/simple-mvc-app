@@ -81,5 +81,6 @@ dependencies {
     //compile("cglib:cglib:3.2.0")
 
     testCompile("junit:junit")
+    testCompile("org.assertj:assertj-core:3.8.0")
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 }
