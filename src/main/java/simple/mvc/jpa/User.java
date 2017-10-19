@@ -1,7 +1,9 @@
 package simple.mvc.jpa;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,7 +32,7 @@ public class User {
     
     //@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="user") // for using custom userDetails implementation - need to fetch roles eagerly 
     @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
-    private List<Role> roles = new ArrayList<Role>();
+    private Set<Role> roles = new HashSet<Role>();
     
     @Column(name = "ENABLED")
     private boolean enabled;
@@ -59,11 +61,11 @@ public class User {
         this.password = password;
     }
     
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
     
