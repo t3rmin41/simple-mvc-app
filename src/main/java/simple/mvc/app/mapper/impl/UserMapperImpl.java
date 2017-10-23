@@ -66,13 +66,6 @@ public class UserMapperImpl implements UserMapper {
           jpa.setPassword(bean.getPassword());
       }
       jpa.setUsername(bean.getUsername());
-      Set<String> oldRoles = convertExistingUserRolesToStrings(jpa.getRoles());
-      Set<String> newRoles = new HashSet<String>();
-      newRoles.addAll(bean.getRoles());
-
-      userRepo.removeRoles(userRepo.getUserRolesByNames(jpa, getOldRolesDifference(oldRoles, newRoles)));
-      userRepo.createRoles(convertUserNewRoleStringToRoles(jpa, getNewRolesDifference(oldRoles, newRoles)));
-        
       return convertJpaToBean(userRepo.updateUser(jpa));
   }
 
@@ -101,25 +94,15 @@ public class UserMapperImpl implements UserMapper {
   }
 
   @Override
-  public Set<String> getNewRolesDifference(Set<String> oldRoles, Set<String> newRoles) {
-    Set<String> commonRoles = new HashSet<String>();
-    commonRoles.addAll(newRoles);
-    Set<String> newRoleSetDiff = new HashSet<String>();
-    newRoleSetDiff.addAll(newRoles);
-    commonRoles.retainAll(oldRoles);
-    newRoleSetDiff.removeAll(commonRoles);
-    return newRoleSetDiff;
+  public void addRoles(Long userId, Set<String> roles) {
+    User jpa = userRepo.getUserById(userId);
+    userRepo.createRoles(convertUserNewRoleStringToRoles(jpa, roles));
   }
 
   @Override
-  public Set<String> getOldRolesDifference(Set<String> oldRoles, Set<String> newRoles) {
-    Set<String> commonRoles = new HashSet<String>();
-    commonRoles.addAll(oldRoles);
-    Set<String> oldRoleSetDiff = new HashSet<String>();
-    oldRoleSetDiff.addAll(oldRoles);
-    commonRoles.retainAll(newRoles);
-    oldRoleSetDiff.removeAll(commonRoles);
-    return oldRoleSetDiff;
+  public void removeRoles(Long userId, Set<String> roles) {
+    User jpa = userRepo.getUserById(userId);
+    userRepo.removeRoles(userRepo.getUserRolesByNames(jpa, roles));
   }
   
   private Set<Role> convertUserNewRoleStringToRoles(User jpa, Set<String> roleNames) {
@@ -147,6 +130,5 @@ public class UserMapperImpl implements UserMapper {
     }
     return roleNames;
   }
-
 
 }

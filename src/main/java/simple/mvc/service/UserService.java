@@ -1,6 +1,7 @@
 package simple.mvc.service;
 
 import java.util.List;
+import java.util.Set;
 
 import simple.mvc.bean.UserBean;
 
@@ -19,4 +20,8 @@ public interface UserService {
     boolean deleteUserById(Long id);
     
     UserBean updateUser(UserBean bean);
+    
+    Set<String> getNewRolesDifference(Set<String> oldRoles, Set<String> newRoles);
+    
+    Set<String> getOldRolesDifference(Set<String> oldRoles, Set<String> newRoles);
 }

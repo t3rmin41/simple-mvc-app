@@ -24,7 +24,7 @@ public interface UserMapper {
 
   List<String> convertUserRolesToUserBeanRoles(Set<Role> roles);
 
-  Set<String> getNewRolesDifference(Set<String> oldRoles, Set<String> newRoles);
-  
-  Set<String> getOldRolesDifference(Set<String> oldRoles, Set<String> newRoles);
+  void addRoles(Long userId, Set<String> roles);
+
+  void removeRoles(Long userId, Set<String> roles);
 }
