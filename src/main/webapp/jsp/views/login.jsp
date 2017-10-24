@@ -53,7 +53,7 @@ $(document).ready(function(){
                 data: $("#loginform").serialize(),
                 success: function(data, textStatus, jQxhr){
                     console.log(data);
-                    window.location.href = "/logged";
+                    window.location.href = data.requestedURL;;
                     //if (data.enabled) {
                     //   window.location.href = "/logged";
                     //}
